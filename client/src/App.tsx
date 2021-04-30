@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import { Notify } from "./components/Notify";
+import React from "react";
+import { Notify } from "./components/Notify/Notify";
 import { useAuth } from "./hooks/useAuth";
 import { Routes } from "./pages/Routes";
-import { setNotify } from "./store/Actionst";
-import { DataContext, GlobalState } from "./store/GlobalState";
-
+import { GlobalState } from "./store/GlobalState";
+import "./utils/prototypes";
+import "./styles/global.scss";
 function App() {
   const { getUser, isAuthenticated, loading } = useAuth();
 

@@ -2,6 +2,7 @@ import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 
 import React, { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { LoginPage } from "./LoginPage";
 
 interface RoutesProps {
   isAuthenticated: boolean | undefined;
@@ -20,7 +21,7 @@ export const Routes: React.FC<RoutesProps> = ({ isAuthenticated, loading }) => {
         </Switch>
       ) : (
         <Switch>
-          <Route path="/login" />
+          <Route path="/login" component={LoginPage} />
           <Redirect to="/login" />
         </Switch>
       )}

@@ -6,7 +6,8 @@ export interface INotify {
 }
 
 export interface IToast {
+  param?: string;
   msg: string;
-  success: boolean;
+  type: string;
   id: string;
 }
