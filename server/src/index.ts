@@ -13,6 +13,7 @@ import { SESSION_SECRET } from "./config/index";
 import authRouter from "./routes/auth.router";
 import userRouter from "./routes/user.routes";
 import { localStrategy } from "./utils/passport";
+
 const app = express();
 (async () => {
   try {

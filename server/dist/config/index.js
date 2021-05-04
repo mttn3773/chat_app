@@ -5,7 +5,15 @@ const dotenv_1 = require("dotenv");
 dotenv_1.config();
 const PORT = process.env.PORT || 4000;
 exports.SESSION_SECRET = process.env.SESSION_SECRET;
+const GMAIL_USER = process.env.GMAIL_USER;
+const GMAIL_PASSWORD = process.env.GMAIL_PASSWORD;
 exports.default = {
+    nodemailer: {
+        auth: {
+            user: GMAIL_USER,
+            pass: GMAIL_PASSWORD,
+        },
+    },
     session: {
         secret: exports.SESSION_SECRET,
         cookie: {
