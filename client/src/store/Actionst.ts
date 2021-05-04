@@ -12,8 +12,6 @@ export const setNotify = (
   return { type: ACTION.NOTIFY, payload };
 };
 
-export const setUser = (
-  payload: IRootState["user"]
-): IActionState<IUser | null> => {
+export const setUser = (payload: IUser | null): IActionState<IUser | null> => {
   return { type: ACTION.SET_USER, payload };
 };

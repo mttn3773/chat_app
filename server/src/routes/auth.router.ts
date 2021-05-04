@@ -24,7 +24,7 @@ router.post("/login", (req, res, _next) => {
       return successResponse({
         res,
         msg: "Authenticated",
-        data: { ...user, password: undefined },
+        data: { user: { ...user, password: undefined } },
       });
     });
   })(req, res, _next);

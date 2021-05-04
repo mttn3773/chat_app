@@ -1,28 +1,30 @@
+import React, { useContext } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-
-import React, { useEffect } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { DataContext } from "../store/GlobalState";
 import { LoginPage } from "./LoginPage";
+import { ProfilePage } from "./ProfilePage";
+import { RegisterPage } from "./RegisterPage";
 
-interface RoutesProps {
-  isAuthenticated: boolean | undefined;
-  loading: boolean;
-}
+interface RoutesProps {}
 
-export const Routes: React.FC<RoutesProps> = ({ isAuthenticated, loading }) => {
-  if (loading) {
-    return null;
-  }
+export const Routes: React.FC<RoutesProps> = ({}) => {
+  const { state } = useContext(DataContext);
+  if (typeof state.user === "undefined") return null;
+  console.log(!!state.user);
+
   return (
     <BrowserRouter>
-      {isAuthenticated ? (
+      {!!state.user ? (
         <Switch>
-          <Route path="/" />
+          <Route exact path="/" />
+          <Route path="/profile" component={ProfilePage} />
+          <Redirect to="/" />
         </Switch>
       ) : (
         <Switch>
-          <Route path="/login" component={LoginPage} />
-          <Redirect to="/login" />
+          <Route path="/sign-in" component={LoginPage} />
+          <Route path="/sign-up" component={RegisterPage} />
+          <Redirect to="/sign-in" />
         </Switch>
       )}
     </BrowserRouter>

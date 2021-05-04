@@ -13,7 +13,7 @@ exports.me = void 0;
 const apiResponse_1 = require("../utils/apiResponse");
 const me = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = req;
-    return apiResponse_1.successResponse({ res, data: user });
+    return apiResponse_1.successResponse({ res, data: { user } });
 });
 exports.me = me;
 //# sourceMappingURL=auth.controllers.js.map

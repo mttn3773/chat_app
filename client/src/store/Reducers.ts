@@ -9,6 +9,7 @@ export const reducers = (
       return { ...state, notify: action.payload };
     case ACTION.SET_USER:
       return { ...state, user: action.payload };
+
     default:
       return state;
   }

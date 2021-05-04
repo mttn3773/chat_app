@@ -75,3 +75,9 @@ form {
     }
   }
 }
+
+@media (max-width: 960px) {
+  .form-container {
+    width: 80%;
+  }
+}

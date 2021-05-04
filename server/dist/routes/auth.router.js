@@ -28,7 +28,7 @@ router.post("/login", (req, res, _next) => {
             return apiResponse_1.successResponse({
                 res,
                 msg: "Authenticated",
-                data: Object.assign(Object.assign({}, user), { password: undefined }),
+                data: { user: Object.assign(Object.assign({}, user), { password: undefined }) },
             });
         });
     })(req, res, _next);

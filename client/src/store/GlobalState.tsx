@@ -1,22 +1,17 @@
 import React, { createContext, useEffect, useReducer } from "react";
-import { useAuth } from "../hooks/useAuth";
 import { IActionState, IRootState } from "../interfaces/rootState.interface";
-import { IUser } from "../interfaces/user.interface";
+import { getUser } from "../utils/getUser";
 import { setUser } from "./Actionst";
 import { reducers } from "./Reducers";
 
-interface GlobalStateProps {
-  getUser: (
-    dispatch: React.Dispatch<IActionState<any>>
-  ) => Promise<IUser | null>;
-}
+interface GlobalStateProps {}
 
 const initialState: IRootState = {
   notify: {
     errors: [],
     success: [],
   },
-  user: null,
+  user: undefined,
 };
 
 export const DataContext = createContext<{
@@ -27,16 +22,14 @@ export const DataContext = createContext<{
   dispatch: () => {},
 });
 
-export const GlobalState: React.FC<GlobalStateProps> = ({
-  children,
-  getUser,
-}) => {
+export const GlobalState: React.FC<GlobalStateProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducers, initialState);
   useEffect(() => {
-    getUser(dispatch).then((user) => {
-      if (user) {
-        dispatch(setUser(user));
-      }
+    console.log(state.user);
+  }, [state.user]);
+  useEffect(() => {
+    getUser(state, dispatch).then((user) => {
+      return dispatch(setUser(user));
     });
   }, []);
   return (
