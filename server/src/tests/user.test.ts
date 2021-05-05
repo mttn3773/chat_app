@@ -5,13 +5,13 @@ import request from "supertest";
 import app from "../index";
 
 beforeAll(async () => {
-  await createConnection(createMockOrmConfig());
+  const config = createMockOrmConfig();
+  await createConnection(config);
 });
 
 afterAll(async () => {
   await User.delete({});
 });
-
 afterEach(async () => {
   await User.delete({});
 });
@@ -20,8 +20,6 @@ test("test GET - /users", async (done) => {
     .get("/api/users")
     .expect((res) => {
       const { body } = res;
-      console.log(body);
-
       expect(body).toHaveProperty("success", true);
       const { users } = body.data;
       expect(users).toHaveLength(0);
@@ -32,7 +30,7 @@ test("test GET - /users", async (done) => {
 test("test POST - /users", async (done) => {
   await request(app)
     .post("/api/users")
-    .send({ email: "bob@bob.com", password: "12345678" })
+    .send({ email: "bob@bob.com", password: "12345678", username: "bob" })
     .expect(async (res) => {
       // Check created user object from response
       const { body } = res;
@@ -62,7 +60,7 @@ test("test POST - /users (WITH NO USER DATA PROVIDED)", async (done) => {
       expect(body).toHaveProperty("success", false);
       expect(body).toHaveProperty("errors");
       const { errors } = body;
-      expect(errors).toHaveLength(2);
+      expect(errors).toHaveLength(3);
       // Check if user object wasn't saved to db
       const user_ = await User.findOne();
       expect(user_).toBeFalsy();
@@ -80,7 +78,7 @@ test("test POST - /users (WITH INVALID EMAIL)", async (done) => {
       expect(body).toHaveProperty("success", false);
       expect(body).toHaveProperty("errors");
       const { errors } = body;
-      expect(errors).toHaveLength(1);
+      expect(errors).toHaveLength(2);
       expect(errors[0]).toHaveProperty("param", "email");
       // Check if user object wasn't saved to db
       const user_ = await User.findOne();

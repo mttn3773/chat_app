@@ -12,6 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
 let User = class User extends typeorm_1.BaseEntity {
+    constructor(creadentials) {
+        super();
+        if (!creadentials)
+            return;
+        const { email, username, password } = creadentials;
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
 };
 __decorate([
     typeorm_1.PrimaryGeneratedColumn(),
@@ -29,8 +38,13 @@ __decorate([
     typeorm_1.Column({ nullable: false, select: false }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    typeorm_1.Column({ default: false, nullable: false }),
+    __metadata("design:type", Boolean)
+], User.prototype, "verified", void 0);
 User = __decorate([
-    typeorm_1.Entity()
+    typeorm_1.Entity(),
+    __metadata("design:paramtypes", [Object])
 ], User);
 exports.User = User;
 //# sourceMappingURL=User.js.map

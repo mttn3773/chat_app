@@ -9,11 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.me = void 0;
-const apiResponse_1 = require("../utils/apiResponse");
+exports.login = exports.me = void 0;
+const auth_services_1 = require("./../services/auth.services");
 const me = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { user } = req;
-    return apiResponse_1.successResponse({ res, data: { user } });
+    const { status, response } = auth_services_1.meService(req);
+    return res
+        .status(status)
+        .json(Object.assign({}, response))
+        .end();
 });
 exports.me = me;
+const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    auth_services_1.loginService(req, res, next);
+});
+exports.login = login;
 //# sourceMappingURL=auth.controllers.js.map

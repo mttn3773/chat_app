@@ -12,3 +12,13 @@ export interface ISuccessResponse {
   status?: number;
   data?: any;
 }
+
+export interface IApiResponse {
+  status: number;
+  response: {
+    success: boolean;
+    data?: any;
+    errors?: IError[];
+    msg?: string;
+  };
+}

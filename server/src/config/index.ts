@@ -1,13 +1,33 @@
 import { config } from "dotenv";
 import { SessionOptions } from "express-session";
+import { ConnectionOptions } from "typeorm";
 
 config();
+const ORM_CONFIG: ConnectionOptions = {
+  type: "postgres",
+  host: "localhost",
+  port: 5432,
+  username: "postgres",
+  password: "postgres",
+  database: "chat_app",
+  synchronize: true,
+  logging: true,
+  entities: ["dist/entity/**/*.js"],
+  migrations: ["dist/migration/**/*.js"],
+  subscribers: ["dist/subscriber/**/*.js"],
+  cli: {
+    entitiesDir: "src/entity",
+    migrationsDir: "src/migration",
+    subscribersDir: "src/subscriber",
+  },
+};
 
 const PORT = process.env.PORT || 4000;
 export const SESSION_SECRET = process.env.SESSION_SECRET;
 const GMAIL_USER = process.env.GMAIL_USER;
 const GMAIL_PASSWORD = process.env.GMAIL_PASSWORD;
 export default {
+  ormConfig: ORM_CONFIG,
   nodemailer: {
     auth: {
       user: GMAIL_USER,

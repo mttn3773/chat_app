@@ -18,7 +18,8 @@ const User_1 = require("../entity/User");
 const supertest_1 = __importDefault(require("supertest"));
 const index_1 = __importDefault(require("../index"));
 beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield typeorm_1.createConnection(mockOrmConfig_1.createMockOrmConfig());
+    const config = mockOrmConfig_1.createMockOrmConfig();
+    yield typeorm_1.createConnection(config);
 }));
 afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
     yield User_1.User.delete({});
@@ -31,7 +32,6 @@ test("test GET - /users", (done) => __awaiter(void 0, void 0, void 0, function* 
         .get("/api/users")
         .expect((res) => {
         const { body } = res;
-        console.log(body);
         expect(body).toHaveProperty("success", true);
         const { users } = body.data;
         expect(users).toHaveLength(0);
@@ -41,7 +41,7 @@ test("test GET - /users", (done) => __awaiter(void 0, void 0, void 0, function* 
 test("test POST - /users", (done) => __awaiter(void 0, void 0, void 0, function* () {
     yield supertest_1.default(index_1.default)
         .post("/api/users")
-        .send({ email: "bob@bob.com", password: "12345678" })
+        .send({ email: "bob@bob.com", password: "12345678", username: "bob" })
         .expect((res) => __awaiter(void 0, void 0, void 0, function* () {
         const { body } = res;
         expect(body).toHaveProperty("success", true);
@@ -66,7 +66,7 @@ test("test POST - /users (WITH NO USER DATA PROVIDED)", (done) => __awaiter(void
         expect(body).toHaveProperty("success", false);
         expect(body).toHaveProperty("errors");
         const { errors } = body;
-        expect(errors).toHaveLength(2);
+        expect(errors).toHaveLength(3);
         const user_ = yield User_1.User.findOne();
         expect(user_).toBeFalsy();
     }));
@@ -81,7 +81,7 @@ test("test POST - /users (WITH INVALID EMAIL)", (done) => __awaiter(void 0, void
         expect(body).toHaveProperty("success", false);
         expect(body).toHaveProperty("errors");
         const { errors } = body;
-        expect(errors).toHaveLength(1);
+        expect(errors).toHaveLength(2);
         expect(errors[0]).toHaveProperty("param", "email");
         const user_ = yield User_1.User.findOne();
         expect(user_).toBeFalsy();

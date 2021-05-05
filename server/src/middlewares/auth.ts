@@ -7,11 +7,14 @@ export const authMiddleware = (
   next: NextFunction
 ) => {
   if (!req.user) {
-    return errorResponse({
-      res,
+    const { status, response } = errorResponse({
       status: 401,
       errors: [{ msg: "You are not authenticated" }],
     });
+    return res
+      .status(status)
+      .json({ ...response })
+      .end();
   }
   return next();
 };

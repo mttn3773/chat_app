@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { json, urlencoded } from "body-parser";
 import connectRedis from "connect-redis";
 import cookieParser from "cookie-parser";
@@ -6,18 +7,16 @@ import express from "express";
 import session from "express-session";
 import passport from "passport";
 import { createClient } from "redis";
-import "reflect-metadata";
 import { createConnection } from "typeorm";
 import config from "./config";
 import { SESSION_SECRET } from "./config/index";
-import authRouter from "./routes/auth.router";
+import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import { localStrategy } from "./utils/passport";
-
 const app = express();
 (async () => {
   try {
-    await createConnection();
+    await createConnection(config.ormConfig);
     app.use(json());
     app.use(urlencoded({ extended: false }));
     app.use(cors());
@@ -38,9 +37,7 @@ const app = express();
     app.listen(config.server.port, () => {
       console.log(`App is running on port ${config.server.port}`);
     });
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 })();
 
 export default app;

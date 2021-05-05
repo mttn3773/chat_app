@@ -48,7 +48,7 @@ passport_1.default.deserializeUser(function (id, done) {
             return done(null, user);
         }
         catch (e) {
-            return done(e, null);
+            return done({ msg: "Something went wrong" }, null);
         }
     });
 });

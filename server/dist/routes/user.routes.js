@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const mapValidationErrors_1 = require("./../utils/mapValidationErrors");
-const user_controllers_1 = require("./../controllers/user.controllers");
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
+const user_controllers_1 = require("./../controllers/user.controllers");
+const mapValidationErrors_1 = require("./../utils/mapValidationErrors");
 const router = express_1.Router();
 router.get("", user_controllers_1.getAllUsers);
 router.post("", [

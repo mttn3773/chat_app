@@ -1,21 +1,24 @@
-import {
-  IErrorResponse,
-  ISuccessResponse,
-} from "src/interfaces/apiResponse.interface";
+import { IApiResponse } from "../interfaces/apiResponse.interface";
+import { IError } from "./../interfaces/error.interface";
 
 export const errorResponse = ({
-  res,
   status = 500,
   errors = [{ msg: "Something went wrong" }],
-}: IErrorResponse) => {
-  return res.status(status).json({ success: false, errors }).end();
+}: {
+  status?: number;
+  errors?: IError[];
+}): IApiResponse => {
+  return { status, response: { success: false, errors } };
 };
 
 export const successResponse = ({
-  res,
-  msg,
   status = 200,
+  msg = "Success",
   data,
-}: ISuccessResponse) => {
-  return res.status(status).json({ success: true, msg, data }).end();
+}: {
+  status?: number;
+  msg?: string;
+  data?: any;
+}): IApiResponse => {
+  return { status, response: { success: true, msg, data } };
 };

@@ -10,7 +10,7 @@ const createMockOrmConfig = () => {
         password: "postgres",
         database: "chat_app_test",
         synchronize: true,
-        logging: true,
+        logging: false,
         entities: ["dist/entity/**/*.js"],
         migrations: ["dist/migration/**/*.js"],
         subscribers: ["dist/subscriber/**/*.js"],

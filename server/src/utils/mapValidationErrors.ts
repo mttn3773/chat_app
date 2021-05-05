@@ -10,10 +10,11 @@ export const mapValidationErrors = (
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return errorResponse({
-      res,
+    const { status, response } = errorResponse({
       errors: errors.array(),
+      status: 400,
     });
+    return res.status(status).json({ ...response });
   }
-  next();
+  return next();
 };

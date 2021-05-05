@@ -1,11 +1,11 @@
-import { mapValidationErrors } from "./../utils/mapValidationErrors";
+import { Router } from "express";
+import { check } from "express-validator";
 import {
   createUser,
   deleteAllUsers,
   getAllUsers,
 } from "./../controllers/user.controllers";
-import { Router } from "express";
-import { check } from "express-validator";
+import { mapValidationErrors } from "./../utils/mapValidationErrors";
 const router = Router();
 
 router.get("", getAllUsers);
