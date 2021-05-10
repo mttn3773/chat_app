@@ -3,12 +3,33 @@ import { check } from "express-validator";
 import {
   createUser,
   deleteAllUsers,
+  forgotPassword,
   getAllUsers,
+  sendVerificationLink,
+  verifyUser,
 } from "./../controllers/user.controllers";
 import { mapValidationErrors } from "./../utils/mapValidationErrors";
 const router = Router();
 
 router.get("", getAllUsers);
+router.put("/verify/:token", verifyUser);
+router.post(
+  "/verify/new",
+  check("email")
+    .trim()
+    .isEmail()
+    .withMessage(
+      "Link is corrupted. Make sure you have copied the link correctly"
+    ),
+  mapValidationErrors,
+  sendVerificationLink
+);
+router.post(
+  "/forgot-password",
+  check("email").trim().isEmail().withMessage("Provide email"),
+  mapValidationErrors,
+  forgotPassword
+);
 router.post(
   "",
   [

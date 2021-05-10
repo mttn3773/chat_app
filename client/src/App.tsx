@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Notify } from "./components/Notify/Notify";
 import { Routes } from "./pages/Routes";
 import { GlobalState } from "./store/GlobalState";

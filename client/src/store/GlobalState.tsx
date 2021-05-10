@@ -25,9 +25,6 @@ export const DataContext = createContext<{
 export const GlobalState: React.FC<GlobalStateProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducers, initialState);
   useEffect(() => {
-    console.log(state.user);
-  }, [state.user]);
-  useEffect(() => {
     getUser(state, dispatch).then((user) => {
       return dispatch(setUser(user));
     });

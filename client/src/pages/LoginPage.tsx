@@ -1,7 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { Redirect } from "react-router";
+import React from "react";
 import { LoginForm } from "../components/Form/LoginForm";
-import { DataContext } from "../store/GlobalState";
 
 interface LoginPageProps {}
 

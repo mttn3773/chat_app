@@ -30,7 +30,7 @@ export const Toast: React.FC<ToastProps> = ({
       onClick={handleDelete}
     >
       <p className="toast-title">
-        {toast.param ? toast.param : toast.type.toCapitalize()}
+        {toast.param ? toast.param.toCapitalize() : toast.type.toCapitalize()}
       </p>
 
       <p>{toast.msg}</p>

@@ -1,6 +1,6 @@
 import { smtpTransport } from "./smtpTransport";
 
-export const sendVerificationEmail = async (
+export const sendResetPasswordEmail = async (
   to: string,
   token: string,
   url: string
@@ -9,8 +9,8 @@ export const sendVerificationEmail = async (
     const mailOptions = {
       from: "Chat App",
       to,
-      subject: "Verify your email",
-      text: `Click this link to verify your email <a>${url}/verify?token=${token}&email=${to}</a>`,
+      subject: "Reset Password",
+      text: `Click this link to reset your password <a>${url}/reset-password?token=${token}&email=${to}</a>`,
     };
     const data = await smtpTransport.sendMail(mailOptions);
     return data;

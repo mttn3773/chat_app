@@ -13,7 +13,7 @@ interface LoginFormProps {}
 export const LoginForm: React.FC<LoginFormProps> = ({}) => {
   const { dispatch, state } = useContext(DataContext);
   const { notify } = state;
-  const SignUpValidationSchema = Yup.object().shape({
+  const SignInValidationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Enter valid email")
       .required("Email is required"),
@@ -42,7 +42,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
           const { user } = res.data;
           return dispatch(setUser(user));
         }}
-        validationSchema={SignUpValidationSchema}
+        validationSchema={SignInValidationSchema}
       >
         {({ isSubmitting }) => (
           <Form>
@@ -67,6 +67,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
             <button disabled={isSubmitting} type="submit">
               Sign In
             </button>
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot password?
+            </Link>
             <div className="sign-in">
               Don't have an account? <Link to="/sign-up">Sign up</Link>
             </div>

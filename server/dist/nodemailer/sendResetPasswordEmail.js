@@ -9,15 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendVerificationEmail = void 0;
+exports.sendResetPasswordEmail = void 0;
 const smtpTransport_1 = require("./smtpTransport");
-const sendVerificationEmail = (to, token, url) => __awaiter(void 0, void 0, void 0, function* () {
+const sendResetPasswordEmail = (to, token, url) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const mailOptions = {
             from: "Chat App",
             to,
-            subject: "Verify your email",
-            text: `Click this link to verify your email <a>${url}/verify?token=${token}&email=${to}</a>`,
+            subject: "Reset Password",
+            text: `Click this link to reset your password <a>${url}/reset-password?token=${token}&email=${to}</a>`,
         };
         const data = yield smtpTransport_1.smtpTransport.sendMail(mailOptions);
         return data;
@@ -26,5 +26,5 @@ const sendVerificationEmail = (to, token, url) => __awaiter(void 0, void 0, void
         console.log(e);
     }
 });
-exports.sendVerificationEmail = sendVerificationEmail;
-//# sourceMappingURL=sendVerificationEmail.js.map
+exports.sendResetPasswordEmail = sendResetPasswordEmail;
+//# sourceMappingURL=sendResetPasswordEmail.js.map

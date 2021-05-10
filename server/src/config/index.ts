@@ -21,12 +21,13 @@ const ORM_CONFIG: ConnectionOptions = {
     subscribersDir: "src/subscriber",
   },
 };
-
+const JWT_SERCRET = process.env.JWT_SECRET;
 const PORT = process.env.PORT || 4000;
 export const SESSION_SECRET = process.env.SESSION_SECRET;
 const GMAIL_USER = process.env.GMAIL_USER;
 const GMAIL_PASSWORD = process.env.GMAIL_PASSWORD;
 export default {
+  jwtSecret: JWT_SERCRET,
   ormConfig: ORM_CONFIG,
   nodemailer: {
     auth: {

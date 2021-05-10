@@ -3,3 +3,7 @@ export interface ICreateUser {
   password: string;
   username: string;
 }
+
+export interface IUserJwtPayload {
+  id: number;
+}

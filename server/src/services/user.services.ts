@@ -1,9 +1,100 @@
-import { ICreateUser } from "./../interfaces/user.interface";
+import { sendResetPasswordEmail } from "./../nodemailer/sendResetPasswordEmail";
+import { baseUrl } from "./../utils/baseUrl";
+import { sendVerificationEmail } from "./../nodemailer/sendVerificationEmail";
+import { ICreateUser, IUserJwtPayload } from "./../interfaces/user.interface";
 import { errorResponse, successResponse } from "./../utils/apiResponse";
 import { IError } from "./../interfaces/error.interface";
 import { User } from "../entity/User";
 import { IApiResponse } from "../interfaces/apiResponse.interface";
 import { hash } from "argon2";
+import { verify, sign, TokenExpiredError } from "jsonwebtoken";
+import config from "../config";
+import { Request } from "express";
+
+export const findUserByEmail = async (email: string): Promise<IApiResponse> => {
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) {
+      return errorResponse({
+        errors: [{ msg: "Couldn't find this user", param: "email" }],
+      });
+    }
+    return successResponse({ data: { user } });
+  } catch (error) {
+    return errorResponse({});
+  }
+};
+
+export const sendResetPasswordEmailService = async (
+  user: User,
+  req: Request
+): Promise<IApiResponse> => {
+  try {
+    const { email, id } = user;
+    const token = sign({ id } as IUserJwtPayload, config.jwtSecret!, {
+      expiresIn: "1d",
+    });
+    const url = baseUrl(req);
+    await sendResetPasswordEmail(email, token, url);
+    return successResponse({
+      status: 200,
+      msg: "Reset password link has been sent",
+    });
+  } catch (error) {
+    return errorResponse({});
+  }
+};
+
+export const sendVerificationEmailService = async (
+  user: User,
+  req: Request
+): Promise<IApiResponse> => {
+  try {
+    const { email, id } = user;
+    const token = sign({ id } as IUserJwtPayload, config.jwtSecret!, {
+      expiresIn: "1d",
+    });
+    const url = baseUrl(req);
+    await sendVerificationEmail(email, token, url);
+    return successResponse({
+      status: 200,
+      msg: "Verification link has been sent",
+    });
+  } catch (error) {
+    return errorResponse({});
+  }
+};
+
+export const verifyUserService = async (
+  token: string
+): Promise<IApiResponse> => {
+  try {
+    // Recieve token from request body and check if payload has id in it
+    const { id } = verify(token, config.jwtSecret!) as IUserJwtPayload;
+    if (!id) {
+      return errorResponse({
+        status: 500,
+        errors: [{ msg: "Verification link expired" }],
+      });
+    }
+    // Update user
+    const data = await User.update({ id }, { verified: true });
+    return successResponse({
+      status: 200,
+      msg: "Account verified",
+      data,
+    });
+  } catch (e) {
+    if (e instanceof TokenExpiredError) {
+      return errorResponse({
+        status: 400,
+        errors: [{ msg: "Verification link expired" }],
+      });
+    }
+    return errorResponse({});
+  }
+};
+
 export const validateUserData = async ({
   username,
   email,

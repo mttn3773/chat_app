@@ -24,5 +24,5 @@ export class User extends BaseEntity {
   password?: string;
 
   @Column({ default: false, nullable: false })
-  verified: false;
+  verified: boolean;
 }

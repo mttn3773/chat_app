@@ -8,11 +8,97 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserService = exports.getAllUsersService = exports.createUserService = exports.validateUserData = void 0;
+exports.deleteUserService = exports.getAllUsersService = exports.createUserService = exports.validateUserData = exports.verifyUserService = exports.sendVerificationEmailService = exports.sendResetPasswordEmailService = exports.findUserByEmail = void 0;
+const sendResetPasswordEmail_1 = require("./../nodemailer/sendResetPasswordEmail");
+const baseUrl_1 = require("./../utils/baseUrl");
+const sendVerificationEmail_1 = require("./../nodemailer/sendVerificationEmail");
 const apiResponse_1 = require("./../utils/apiResponse");
 const User_1 = require("../entity/User");
 const argon2_1 = require("argon2");
+const jsonwebtoken_1 = require("jsonwebtoken");
+const config_1 = __importDefault(require("../config"));
+const findUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield User_1.User.findOne({ where: { email } });
+        if (!user) {
+            return apiResponse_1.errorResponse({
+                errors: [{ msg: "Couldn't find this user", param: "email" }],
+            });
+        }
+        return apiResponse_1.successResponse({ data: { user } });
+    }
+    catch (error) {
+        return apiResponse_1.errorResponse({});
+    }
+});
+exports.findUserByEmail = findUserByEmail;
+const sendResetPasswordEmailService = (user, req) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, id } = user;
+        const token = jsonwebtoken_1.sign({ id }, config_1.default.jwtSecret, {
+            expiresIn: "1d",
+        });
+        const url = baseUrl_1.baseUrl(req);
+        yield sendResetPasswordEmail_1.sendResetPasswordEmail(email, token, url);
+        return apiResponse_1.successResponse({
+            status: 200,
+            msg: "Reset password link has been sent",
+        });
+    }
+    catch (error) {
+        return apiResponse_1.errorResponse({});
+    }
+});
+exports.sendResetPasswordEmailService = sendResetPasswordEmailService;
+const sendVerificationEmailService = (user, req) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email, id } = user;
+        const token = jsonwebtoken_1.sign({ id }, config_1.default.jwtSecret, {
+            expiresIn: "1d",
+        });
+        const url = baseUrl_1.baseUrl(req);
+        yield sendVerificationEmail_1.sendVerificationEmail(email, token, url);
+        return apiResponse_1.successResponse({
+            status: 200,
+            msg: "Verification link has been sent",
+        });
+    }
+    catch (error) {
+        return apiResponse_1.errorResponse({});
+    }
+});
+exports.sendVerificationEmailService = sendVerificationEmailService;
+const verifyUserService = (token) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = jsonwebtoken_1.verify(token, config_1.default.jwtSecret);
+        if (!id) {
+            return apiResponse_1.errorResponse({
+                status: 500,
+                errors: [{ msg: "Verification link expired" }],
+            });
+        }
+        const data = yield User_1.User.update({ id }, { verified: true });
+        return apiResponse_1.successResponse({
+            status: 200,
+            msg: "Account verified",
+            data,
+        });
+    }
+    catch (e) {
+        if (e instanceof jsonwebtoken_1.TokenExpiredError) {
+            return apiResponse_1.errorResponse({
+                status: 400,
+                errors: [{ msg: "Verification link expired" }],
+            });
+        }
+        return apiResponse_1.errorResponse({});
+    }
+});
+exports.verifyUserService = verifyUserService;
 const validateUserData = ({ username, email, }) => __awaiter(void 0, void 0, void 0, function* () {
     const isEmailTaken = yield User_1.User.findOne({ where: { email } });
     if (isEmailTaken) {

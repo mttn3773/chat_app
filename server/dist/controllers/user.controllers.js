@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUser = exports.deleteAllUsers = exports.getAllUsers = void 0;
+exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getAllUsers = void 0;
 const user_services_1 = require("./../services/user.services");
 const getAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = yield user_services_1.getAllUsersService();
@@ -27,6 +27,43 @@ const deleteAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, f
         .end();
 });
 exports.deleteAllUsers = deleteAllUsers;
+const verifyUser = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { token } = req.body;
+    const { status, response } = yield user_services_1.verifyUserService(token);
+    return res
+        .status(status)
+        .json(Object.assign({}, response))
+        .end();
+});
+exports.verifyUser = verifyUser;
+const sendVerificationLink = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    const { status, response } = yield user_services_1.findUserByEmail(email);
+    if (!response.success) {
+        return res
+            .status(status)
+            .json(Object.assign({}, response))
+            .end();
+    }
+    const user = response.data.user;
+    const { status: status_, response: response_, } = yield user_services_1.sendVerificationEmailService(user, req);
+    return res.status(status_).json(Object.assign({}, response_));
+});
+exports.sendVerificationLink = sendVerificationLink;
+const forgotPassword = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    const { status, response } = yield user_services_1.findUserByEmail(email);
+    if (!response.success) {
+        return res
+            .status(status)
+            .json(Object.assign({}, response))
+            .end();
+    }
+    const user = response.data.user;
+    const { status: status_, response: response_, } = yield user_services_1.sendResetPasswordEmailService(user, req);
+    return res.status(status_).json(Object.assign({}, response_));
+});
+exports.forgotPassword = forgotPassword;
 const createUser = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, username } = req.body;
     const { status, response } = yield user_services_1.createUserService({
@@ -34,6 +71,9 @@ const createUser = (req, res, _next) => __awaiter(void 0, void 0, void 0, functi
         username,
         password,
     });
+    if (response.success) {
+        user_services_1.sendVerificationEmailService(response.data.user, req);
+    }
     return res
         .status(status)
         .json(Object.assign({}, response))
