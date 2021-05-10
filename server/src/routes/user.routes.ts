@@ -11,8 +11,20 @@ import {
 import { mapValidationErrors } from "./../utils/mapValidationErrors";
 const router = Router();
 
+// Get Users
 router.get("", getAllUsers);
-router.put("/verify/:token", verifyUser);
+
+// Verify Accound
+router.put(
+  "/verify",
+  check("token")
+    .isJWT()
+    .withMessage(
+      "Link is corrupted. Make sure you have copied the link correctly"
+    ),
+  mapValidationErrors,
+  verifyUser
+);
 router.post(
   "/verify/new",
   check("email")

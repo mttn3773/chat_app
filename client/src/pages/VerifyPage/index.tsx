@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { request } from "../utils/request";
-import { config } from "../config";
-import { dispatchNotify } from "../utils/dispatchNotify";
-import { DataContext } from "../store/GlobalState";
+import { request } from "../../utils/request";
+import { config } from "../../config/";
+import { dispatchNotify } from "../../utils/dispatchNotify";
+import { DataContext } from "../../store/GlobalState";
 import { parse } from "query-string";
+import "./VerifyPage.scss";
 interface VerifyProps {}
-
-interface VerifyParams {
-  token: string;
-}
 
 export const VerifyPage: React.FC<VerifyProps> = ({}) => {
   const { dispatch, state } = useContext(DataContext);
@@ -17,7 +14,7 @@ export const VerifyPage: React.FC<VerifyProps> = ({}) => {
   const [expired, setExpired] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   useEffect(() => {
-    const url = config.endpoints.verify(token as string);
+    const url = config.endpoints.verify;
     request({ url, method: "PUT", body: { token } }).then((res) => {
       dispatchNotify(dispatch, res, notify);
       if (res.errors) setExpired(true);

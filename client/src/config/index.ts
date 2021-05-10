@@ -4,7 +4,7 @@ const ENDPOINTS = {
   login: baseUrl + "api/auth/login",
   register: baseUrl + "api/users",
   me: baseUrl + "api/auth/me",
-  verify: (token: string) => `${baseUrl}api/users/verify/${token}`,
+  verify: baseUrl + "api/users/verify",
   sendNewVerificationLink: baseUrl + "/api/users/verify/new",
   sendForgotPasswordEmail: baseUrl + "/api/users/forgot-password",
 };

@@ -6,7 +6,9 @@ const user_controllers_1 = require("./../controllers/user.controllers");
 const mapValidationErrors_1 = require("./../utils/mapValidationErrors");
 const router = express_1.Router();
 router.get("", user_controllers_1.getAllUsers);
-router.put("/verify/:token", user_controllers_1.verifyUser);
+router.put("/verify", express_validator_1.check("token")
+    .isJWT()
+    .withMessage("Link is corrupted. Make sure you have copied the link correctly"), mapValidationErrors_1.mapValidationErrors, user_controllers_1.verifyUser);
 router.post("/verify/new", express_validator_1.check("email")
     .trim()
     .isEmail()

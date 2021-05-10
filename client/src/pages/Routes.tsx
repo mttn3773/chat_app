@@ -5,7 +5,7 @@ import { ForgotPasswordPage } from "./ForgotPasswordPage";
 import { LoginPage } from "./LoginPage";
 import { ProfilePage } from "./ProfilePage";
 import { RegisterPage } from "./RegisterPage";
-import { VerifyPage } from "./VerifyPage";
+import { VerifyPage } from "./VerifyPage/";
 
 interface RoutesProps {}
 
