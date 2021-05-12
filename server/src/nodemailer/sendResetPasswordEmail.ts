@@ -10,7 +10,7 @@ export const sendResetPasswordEmail = async (
       from: "Chat App",
       to,
       subject: "Reset Password",
-      text: `Click this link to reset your password <a>${url}/reset-password?token=${token}&email=${to}</a>`,
+      text: `Click this link to reset your password <a>${url}/reset-password?token=${token}</a>`,
     };
     const data = await smtpTransport.sendMail(mailOptions);
     return data;

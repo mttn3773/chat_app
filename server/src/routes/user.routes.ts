@@ -5,6 +5,7 @@ import {
   deleteAllUsers,
   forgotPassword,
   getAllUsers,
+  resetPassword,
   sendVerificationLink,
   verifyUser,
 } from "./../controllers/user.controllers";
@@ -14,7 +15,7 @@ const router = Router();
 // Get Users
 router.get("", getAllUsers);
 
-// Verify Accound
+// Verify Account
 router.put(
   "/verify",
   check("token")
@@ -25,6 +26,25 @@ router.put(
   mapValidationErrors,
   verifyUser
 );
+
+// Reset Password
+
+router.put(
+  "/reset-password",
+  [
+    check("token")
+      .isJWT()
+      .withMessage(
+        "Link is corrupted. Make sure you have copied the link correctly"
+      ),
+    check("password").trim().isLength({ min: 8, max: 64 }),
+  ],
+  mapValidationErrors,
+  resetPassword
+);
+
+// Send new verification link
+
 router.post(
   "/verify/new",
   check("email")
@@ -36,12 +56,14 @@ router.post(
   mapValidationErrors,
   sendVerificationLink
 );
+// Send reset-password link
 router.post(
   "/forgot-password",
   check("email").trim().isEmail().withMessage("Provide email"),
   mapValidationErrors,
   forgotPassword
 );
+// Register new user
 router.post(
   "",
   [

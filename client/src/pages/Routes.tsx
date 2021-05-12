@@ -5,6 +5,7 @@ import { ForgotPasswordPage } from "./ForgotPasswordPage";
 import { LoginPage } from "./LoginPage";
 import { ProfilePage } from "./ProfilePage";
 import { RegisterPage } from "./RegisterPage";
+import { ResetPasswordPage } from "./ResetPasswordPage";
 import { VerifyPage } from "./VerifyPage/";
 
 interface RoutesProps {}
@@ -19,7 +20,10 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
         <Switch>
           <Route exact path="/" />
           <Route path="/verify" component={VerifyPage} />
-          <Route path="/profile" component={ProfilePage} />
+          <Route exact path="/profile">
+            <Redirect to={`/profile/${state.user.id}`} />
+          </Route>
+          <Route path="/profile/:id" component={ProfilePage} />
           <Redirect to="/" />
         </Switch>
       ) : (
@@ -28,6 +32,7 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
           <Route path="/verify" component={VerifyPage} />
           <Route path="/sign-up" component={RegisterPage} />
           <Route path="/forgot-password" component={ForgotPasswordPage} />
+          <Route path="/reset-password" component={ResetPasswordPage} />
           <Redirect to="/sign-in" />
         </Switch>
       )}

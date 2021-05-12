@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserService = exports.getAllUsersService = exports.createUserService = exports.validateUserData = exports.verifyUserService = exports.sendVerificationEmailService = exports.sendResetPasswordEmailService = exports.findUserByEmail = void 0;
+exports.resetPasswordService = exports.deleteUserService = exports.getAllUsersService = exports.createUserService = exports.validateUserData = exports.verifyUserService = exports.sendVerificationEmailService = exports.sendResetPasswordEmailService = exports.findUserByEmail = void 0;
 const sendResetPasswordEmail_1 = require("./../nodemailer/sendResetPasswordEmail");
 const baseUrl_1 = require("./../utils/baseUrl");
 const sendVerificationEmail_1 = require("./../nodemailer/sendVerificationEmail");
@@ -151,4 +151,22 @@ const deleteUserService = () => __awaiter(void 0, void 0, void 0, function* () {
     });
 });
 exports.deleteUserService = deleteUserService;
+const resetPasswordService = (password, token) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = jsonwebtoken_1.verify(token, config_1.default.jwtSecret);
+        const hashedPassword = yield argon2_1.hash(password);
+        yield User_1.User.update({ id }, { password: hashedPassword });
+        return apiResponse_1.successResponse({ msg: "Password updated" });
+    }
+    catch (e) {
+        if (e instanceof jsonwebtoken_1.TokenExpiredError) {
+            return apiResponse_1.errorResponse({
+                status: 400,
+                errors: [{ msg: "Verification link expired" }],
+            });
+        }
+        return apiResponse_1.errorResponse({});
+    }
+});
+exports.resetPasswordService = resetPasswordService;
 //# sourceMappingURL=user.services.js.map

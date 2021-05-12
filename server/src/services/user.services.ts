@@ -156,3 +156,23 @@ export const deleteUserService = async (): Promise<IApiResponse> => {
     data: { users },
   });
 };
+
+export const resetPasswordService = async (
+  password: string,
+  token: string
+): Promise<IApiResponse> => {
+  try {
+    const { id } = verify(token, config.jwtSecret!) as IUserJwtPayload;
+    const hashedPassword = await hash(password);
+    await User.update({ id }, { password: hashedPassword });
+    return successResponse({ msg: "Password updated" });
+  } catch (e) {
+    if (e instanceof TokenExpiredError) {
+      return errorResponse({
+        status: 400,
+        errors: [{ msg: "Verification link expired" }],
+      });
+    }
+    return errorResponse({});
+  }
+};

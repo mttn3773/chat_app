@@ -14,6 +14,7 @@ import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import { localStrategy } from "./utils/passport";
 const app = express();
+
 (async () => {
   try {
     await createConnection(config.ormConfig);

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getAllUsers = void 0;
+exports.resetPassword = exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getAllUsers = void 0;
 const user_services_1 = require("./../services/user.services");
 const getAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = yield user_services_1.getAllUsersService();
@@ -80,4 +80,13 @@ const createUser = (req, res, _next) => __awaiter(void 0, void 0, void 0, functi
         .end();
 });
 exports.createUser = createUser;
+const resetPassword = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { password, token } = req.body;
+    const { response, status } = yield user_services_1.resetPasswordService(password, token);
+    return res
+        .status(status)
+        .json(Object.assign({}, response))
+        .end();
+});
+exports.resetPassword = resetPassword;
 //# sourceMappingURL=user.controllers.js.map

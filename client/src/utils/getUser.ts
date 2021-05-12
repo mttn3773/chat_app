@@ -12,11 +12,13 @@ export const getUser = async (
 ): Promise<IUser | null> => {
   try {
     const response = await request({ url: config.endpoints.me });
-    dispatchNotify(dispatch, response, notify);
     return response.data.user;
   } catch (error) {
     dispatch(
-      setNotify({ ...notify, errors: [{ msg: "Something went wrong" }] })
+      setNotify({
+        ...notify,
+        errors: [{ msg: "Authentication failed. Something went wrong" }],
+      })
     );
     return null;
   }

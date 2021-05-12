@@ -9,6 +9,12 @@ router.get("", user_controllers_1.getAllUsers);
 router.put("/verify", express_validator_1.check("token")
     .isJWT()
     .withMessage("Link is corrupted. Make sure you have copied the link correctly"), mapValidationErrors_1.mapValidationErrors, user_controllers_1.verifyUser);
+router.put("/reset-password", [
+    express_validator_1.check("token")
+        .isJWT()
+        .withMessage("Link is corrupted. Make sure you have copied the link correctly"),
+    express_validator_1.check("password").trim().isLength({ min: 8, max: 64 }),
+], mapValidationErrors_1.mapValidationErrors, user_controllers_1.resetPassword);
 router.post("/verify/new", express_validator_1.check("email")
     .trim()
     .isEmail()

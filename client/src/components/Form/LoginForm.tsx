@@ -8,7 +8,13 @@ import { config } from "../../config";
 import { DataContext } from "../../store/GlobalState";
 import { setUser } from "../../store/Actionst";
 import { dispatchNotify } from "../../utils/dispatchNotify";
+
 interface LoginFormProps {}
+
+interface IValues {
+  email: string;
+  password: string;
+}
 
 export const LoginForm: React.FC<LoginFormProps> = ({}) => {
   const { dispatch, state } = useContext(DataContext);
@@ -21,27 +27,28 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
       .required("Password is required")
       .min(8, "Password should be at least 8 charecters long"),
   });
-
+  const hadnleSubmit = async (values: IValues) => {
+    const res = await request({
+      url: config.endpoints.login,
+      method: "POST",
+      body: values,
+    });
+    dispatchNotify(dispatch, res, notify);
+    const { user } = res.data;
+    return dispatch(setUser(user));
+  };
+  const initialValues: IValues = {
+    email: "",
+    password: "",
+  };
   if (state.user) {
     return <Redirect to="/" />;
   }
   return (
     <div className="form-container">
       <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        onSubmit={async (values) => {
-          const res = await request({
-            url: config.endpoints.login,
-            method: "POST",
-            body: values,
-          });
-          dispatchNotify(dispatch, res, notify);
-          const { user } = res.data;
-          return dispatch(setUser(user));
-        }}
+        initialValues={initialValues}
+        onSubmit={hadnleSubmit}
         validationSchema={SignInValidationSchema}
       >
         {({ isSubmitting }) => (

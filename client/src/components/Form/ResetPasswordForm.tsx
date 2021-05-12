@@ -1,31 +1,27 @@
-import { Field, Form, Formik, ErrorMessage } from "formik";
-import React, { useContext, useEffect, useState } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Formik, Form, ErrorMessage, Field } from "formik";
+import { parse } from "query-string";
+import { config } from "../../config/";
+import React, { useContext, useState } from "react";
 import * as Yup from "yup";
-import { config } from "../../config";
 import { setUser } from "../../store/Actionst";
 import { DataContext } from "../../store/GlobalState";
 import { dispatchNotify } from "../../utils/dispatchNotify";
 import { request } from "../../utils/request";
 import "./Form.scss";
-
-interface RegisterFormProps {}
+import { Redirect } from "react-router";
+interface ResetPasswordFormProps {}
 
 interface IValues {
-  username: string;
-  email: string;
   password: string;
   confirm_password: string;
 }
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
-  const { state, dispatch } = useContext(DataContext);
+export const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({}) => {
+  const { dispatch, state } = useContext(DataContext);
   const { notify } = state;
-  const SignUpValidationSchema = Yup.object().shape({
-    username: Yup.string().required("Username is required"),
-    email: Yup.string()
-      .email("Enter valid email")
-      .required("Email is required"),
+  const { token } = parse(window.location.search);
+  const [success, setSuccess] = useState<boolean>(false);
+  const ValidationSchema = Yup.object().shape({
     password: Yup.string()
       .required("Password is required")
       .min(8, "Password should be at least 8 charecters long"),
@@ -33,54 +29,33 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
       .required("Confirm password")
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
   });
+
   const handleSubmit = async (values: IValues) => {
     const res = await request({
-      url: config.endpoints.register,
-      method: "POST",
-      body: values,
+      url: config.endpoints.reset_password,
+      method: "PUT",
+      body: { password: values.password, token },
     });
     dispatchNotify(dispatch, res, notify);
-    const { user } = res.data;
-    return dispatch(setUser(user));
+    if (res.success) setSuccess(true);
+    return;
   };
   const initialValues: IValues = {
-    username: "",
-    email: "",
     password: "",
     confirm_password: "",
   };
-  if (state.user) {
-    return <Redirect to="/" />;
-  }
+  if (success) return <Redirect to="/" />;
   return (
     <div className="form-container">
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={SignUpValidationSchema}
+        validationSchema={ValidationSchema}
       >
         {({ isSubmitting }) => (
           <Form>
             <div className="field-container">
-              <label htmlFor="username">Username</label>
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="error-message"
-              />
-              <Field name="username"></Field>
-            </div>
-            <div className="field-container">
-              <label htmlFor="email">Email</label>
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="error-message"
-              />
-              <Field name="email"></Field>
-            </div>
-            <div className="field-container">
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">Enter new password</label>
               <ErrorMessage
                 name="password"
                 component="div"
@@ -98,11 +73,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
               <Field name="confirm_password" type="password"></Field>
             </div>
             <button disabled={isSubmitting} type="submit">
-              Sign Up
+              Submit
             </button>
-            <div className="sign-in">
-              Have an account? <Link to="/sign-in">Sign in</Link>
-            </div>
           </Form>
         )}
       </Formik>

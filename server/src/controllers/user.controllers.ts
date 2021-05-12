@@ -5,6 +5,7 @@ import {
   deleteUserService,
   findUserByEmail,
   getAllUsersService,
+  resetPasswordService,
   sendResetPasswordEmailService,
   sendVerificationEmailService,
   verifyUserService,
@@ -102,6 +103,19 @@ export const createUser = async (
   if (response.success) {
     sendVerificationEmailService(response.data.user, req);
   }
+  return res
+    .status(status)
+    .json({ ...response })
+    .end();
+};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const { password, token } = req.body;
+  const { response, status } = await resetPasswordService(password, token);
   return res
     .status(status)
     .json({ ...response })

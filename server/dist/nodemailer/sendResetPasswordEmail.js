@@ -17,7 +17,7 @@ const sendResetPasswordEmail = (to, token, url) => __awaiter(void 0, void 0, voi
             from: "Chat App",
             to,
             subject: "Reset Password",
-            text: `Click this link to reset your password <a>${url}/reset-password?token=${token}&email=${to}</a>`,
+            text: `Click this link to reset your password <a>${url}/reset-password?token=${token}</a>`,
         };
         const data = yield smtpTransport_1.smtpTransport.sendMail(mailOptions);
         return data;
