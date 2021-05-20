@@ -1,4 +1,6 @@
+import { IApiResponse } from "./../interfaces/apiResponse.interface";
 import { NextFunction, Request, Response } from "express";
+import { upload } from "../utils/multer";
 import { ICreateUser } from "./../interfaces/user.interface";
 import {
   createUserService,
@@ -61,10 +63,8 @@ export const sendVerificationLink = async (
       .end();
   }
   const user = response.data.user;
-  const {
-    status: status_,
-    response: response_,
-  } = await sendVerificationEmailService(user, req);
+  const { status: status_, response: response_ } =
+    await sendVerificationEmailService(user, req);
   return res.status(status_).json({ ...response_ });
 };
 
@@ -82,10 +82,8 @@ export const forgotPassword = async (
       .end();
   }
   const user = response.data.user;
-  const {
-    status: status_,
-    response: response_,
-  } = await sendResetPasswordEmailService(user, req);
+  const { status: status_, response: response_ } =
+    await sendResetPasswordEmailService(user, req);
   return res.status(status_).json({ ...response_ });
 };
 
@@ -120,4 +118,30 @@ export const resetPassword = async (
     .status(status)
     .json({ ...response })
     .end();
+};
+export const setAvatar = (req: Request, res: Response, _next: NextFunction) => {
+  upload(req, res, (err: any) => {
+    if (err) {
+      return res
+        .status(500)
+        .json({ success: false, errors: err } as IApiResponse["response"])
+        .end();
+    }
+    if (!req.file) {
+      return res
+        .status(500)
+        .json({
+          success: false,
+          errors: [{ msg: "No file selected" }],
+        } as IApiResponse["response"])
+        .end();
+    }
+    return res
+      .status(200)
+      .json({
+        success: true,
+        msg: "Image Uploaded",
+      } as IApiResponse["response"])
+      .end();
+  });
 };

@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getAllUsers = void 0;
+exports.setAvatar = exports.resetPassword = exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getAllUsers = void 0;
+const multer_1 = require("../utils/multer");
 const user_services_1 = require("./../services/user.services");
 const getAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = yield user_services_1.getAllUsersService();
@@ -46,7 +47,7 @@ const sendVerificationLink = (req, res, _next) => __awaiter(void 0, void 0, void
             .end();
     }
     const user = response.data.user;
-    const { status: status_, response: response_, } = yield user_services_1.sendVerificationEmailService(user, req);
+    const { status: status_, response: response_ } = yield user_services_1.sendVerificationEmailService(user, req);
     return res.status(status_).json(Object.assign({}, response_));
 });
 exports.sendVerificationLink = sendVerificationLink;
@@ -60,7 +61,7 @@ const forgotPassword = (req, res, _next) => __awaiter(void 0, void 0, void 0, fu
             .end();
     }
     const user = response.data.user;
-    const { status: status_, response: response_, } = yield user_services_1.sendResetPasswordEmailService(user, req);
+    const { status: status_, response: response_ } = yield user_services_1.sendResetPasswordEmailService(user, req);
     return res.status(status_).json(Object.assign({}, response_));
 });
 exports.forgotPassword = forgotPassword;
@@ -89,4 +90,31 @@ const resetPassword = (req, res, _next) => __awaiter(void 0, void 0, void 0, fun
         .end();
 });
 exports.resetPassword = resetPassword;
+const setAvatar = (req, res, _next) => {
+    multer_1.upload(req, res, (err) => {
+        if (err) {
+            return res
+                .status(500)
+                .json({ success: false, errors: err })
+                .end();
+        }
+        if (!req.file) {
+            return res
+                .status(500)
+                .json({
+                success: false,
+                errors: [{ msg: "No file selected" }],
+            })
+                .end();
+        }
+        return res
+            .status(200)
+            .json({
+            success: true,
+            msg: "Image Uploaded",
+        })
+            .end();
+    });
+};
+exports.setAvatar = setAvatar;
 //# sourceMappingURL=user.controllers.js.map

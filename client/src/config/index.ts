@@ -8,6 +8,7 @@ const ENDPOINTS = {
   reset_password: baseUrl + "api/users/reset-password",
   sendNewVerificationLink: baseUrl + "/api/users/verify/new",
   sendForgotPasswordEmail: baseUrl + "/api/users/forgot-password",
+  avatar: baseUrl + "api/users/image",
 };
 
 export const config = {

@@ -8,6 +8,7 @@ import { config } from "../../config";
 import { DataContext } from "../../store/GlobalState";
 import { setUser } from "../../store/Actionst";
 import { dispatchNotify } from "../../utils/dispatchNotify";
+import { InputField } from "./InputField";
 
 interface LoginFormProps {}
 
@@ -27,7 +28,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
       .required("Password is required")
       .min(8, "Password should be at least 8 charecters long"),
   });
-  const hadnleSubmit = async (values: IValues) => {
+  const handleSubmit = async (values: IValues) => {
     const res = await request({
       url: config.endpoints.login,
       method: "POST",
@@ -48,29 +49,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
     <div className="form-container">
       <Formik
         initialValues={initialValues}
-        onSubmit={hadnleSubmit}
+        onSubmit={handleSubmit}
         validationSchema={SignInValidationSchema}
       >
         {({ isSubmitting }) => (
           <Form>
-            <div className="field-container">
-              <label htmlFor="email">Email</label>
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="error-message"
-              />
-              <Field name="email"></Field>
-            </div>
-            <div className="field-container">
-              <label htmlFor="password">Password</label>
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="error-message"
-              />
-              <Field name="password" type="password"></Field>
-            </div>
+            <InputField name="email" />
+            <InputField name="password" type="password" />
             <button disabled={isSubmitting} type="submit">
               Sign In
             </button>

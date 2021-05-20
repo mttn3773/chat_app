@@ -8,6 +8,7 @@ import { DataContext } from "../../store/GlobalState";
 import { dispatchNotify } from "../../utils/dispatchNotify";
 import { request } from "../../utils/request";
 import "./Form.scss";
+import { InputField } from "./InputField";
 
 interface RegisterFormProps {}
 
@@ -61,42 +62,10 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <div className="field-container">
-              <label htmlFor="username">Username</label>
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="error-message"
-              />
-              <Field name="username"></Field>
-            </div>
-            <div className="field-container">
-              <label htmlFor="email">Email</label>
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="error-message"
-              />
-              <Field name="email"></Field>
-            </div>
-            <div className="field-container">
-              <label htmlFor="password">Password</label>
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="error-message"
-              />
-              <Field name="password" type="password"></Field>
-            </div>
-            <div className="field-container">
-              <label htmlFor="confirm_password">Confirm Password</label>
-              <ErrorMessage
-                name="confirm_password"
-                component="div"
-                className="error-message"
-              />
-              <Field name="confirm_password" type="password"></Field>
-            </div>
+            <InputField name="username" />
+            <InputField name="email" />
+            <InputField name="password" type="password" />
+            <InputField name="confirm_password" type="password" />
             <button disabled={isSubmitting} type="submit">
               Sign Up
             </button>

@@ -1,15 +1,15 @@
-import { sendResetPasswordEmail } from "./../nodemailer/sendResetPasswordEmail";
-import { baseUrl } from "./../utils/baseUrl";
-import { sendVerificationEmail } from "./../nodemailer/sendVerificationEmail";
-import { ICreateUser, IUserJwtPayload } from "./../interfaces/user.interface";
-import { errorResponse, successResponse } from "./../utils/apiResponse";
-import { IError } from "./../interfaces/error.interface";
+import { hash } from "argon2";
+import { Request } from "express";
+import { sign, TokenExpiredError, verify } from "jsonwebtoken";
+import config from "../config";
 import { User } from "../entity/User";
 import { IApiResponse } from "../interfaces/apiResponse.interface";
-import { hash } from "argon2";
-import { verify, sign, TokenExpiredError } from "jsonwebtoken";
-import config from "../config";
-import { Request } from "express";
+import { IError } from "./../interfaces/error.interface";
+import { ICreateUser, IUserJwtPayload } from "./../interfaces/user.interface";
+import { sendResetPasswordEmail } from "./../nodemailer/sendResetPasswordEmail";
+import { sendVerificationEmail } from "./../nodemailer/sendVerificationEmail";
+import { errorResponse, successResponse } from "./../utils/apiResponse";
+import { baseUrl } from "./../utils/baseUrl";
 
 export const findUserByEmail = async (email: string): Promise<IApiResponse> => {
   try {
@@ -176,3 +176,4 @@ export const resetPasswordService = async (
     return errorResponse({});
   }
 };
+

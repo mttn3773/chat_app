@@ -1,0 +1,22 @@
+input {
+  color: #efefef;
+  text-indent: 0.5rem;
+  font-size: 1em;
+  width: 100%;
+  padding: 0.5rem 0.5rem;
+  border: 2px solid;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  &:focus {
+    outline: none;
+    border-color: rgba(2, 1, 1, 0.1);
+  }
+}
+.error-message {
+  color: #ff5959;
+  font-size: 1em;
+}
+
+.field-container {
+  width: 100%;
+}

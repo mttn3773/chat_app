@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const auth_1 = require("./../middlewares/auth");
 const express_1 = require("express");
 const express_validator_1 = require("express-validator");
 const user_controllers_1 = require("./../controllers/user.controllers");
@@ -15,6 +16,7 @@ router.put("/reset-password", [
         .withMessage("Link is corrupted. Make sure you have copied the link correctly"),
     express_validator_1.check("password").trim().isLength({ min: 8, max: 64 }),
 ], mapValidationErrors_1.mapValidationErrors, user_controllers_1.resetPassword);
+router.put("/image", auth_1.authMiddleware, user_controllers_1.setAvatar);
 router.post("/verify/new", express_validator_1.check("email")
     .trim()
     .isEmail()

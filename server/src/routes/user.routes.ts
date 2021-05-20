@@ -1,5 +1,7 @@
+import { authMiddleware } from "./../middlewares/auth";
 import { Router } from "express";
 import { check } from "express-validator";
+
 import {
   createUser,
   deleteAllUsers,
@@ -7,6 +9,7 @@ import {
   getAllUsers,
   resetPassword,
   sendVerificationLink,
+  setAvatar,
   verifyUser,
 } from "./../controllers/user.controllers";
 import { mapValidationErrors } from "./../utils/mapValidationErrors";
@@ -43,6 +46,10 @@ router.put(
   resetPassword
 );
 
+// Set Avatar
+
+router.put("/image", authMiddleware, setAvatar);
+
 // Send new verification link
 
 router.post(
@@ -74,5 +81,6 @@ router.post(
   mapValidationErrors,
   createUser
 );
+
 router.delete("", deleteAllUsers);
 export default router;

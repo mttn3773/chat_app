@@ -7,8 +7,10 @@ export const request = async ({
   body,
 }: RequestProps): Promise<IApiResponse> => {
   try {
-    headers["Accept"] = "application/json, text/plain, */*";
-    headers["Content-Type"] = "application/json";
+    if (headers) {
+      headers["Accept"] = "application/json, text/plain, */*";
+      headers["Content-Type"] = "application/json";
+    }
     body = JSON.stringify(body);
     const res = await fetch(url, {
       method,
