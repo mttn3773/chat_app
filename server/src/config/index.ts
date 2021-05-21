@@ -21,11 +21,19 @@ const ORM_CONFIG: ConnectionOptions = {
     subscribersDir: "src/subscriber",
   },
 };
+
+const PROFILE_PICTURES_FOLDER = "../client/public/uploads/profile-pictures";
+const DEFAULT_PROFILE_PICTURE = "default.svg";
+
 const JWT_SERCRET = process.env.JWT_SECRET;
+
 const PORT = process.env.PORT || 4000;
+
 export const SESSION_SECRET = process.env.SESSION_SECRET;
+
 const GMAIL_USER = process.env.GMAIL_USER;
 const GMAIL_PASSWORD = process.env.GMAIL_PASSWORD;
+
 export default {
   jwtSecret: JWT_SERCRET,
   ormConfig: ORM_CONFIG,
@@ -46,5 +54,9 @@ export default {
   } as SessionOptions,
   server: {
     port: PORT,
+  },
+  folders: {
+    profilePicturesFolder: PROFILE_PICTURES_FOLDER,
+    defaultProfilePicture: DEFAULT_PROFILE_PICTURE,
   },
 };

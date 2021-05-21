@@ -24,7 +24,7 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
       <div className="profile-conteiner">
         <div className="user-avatar">
           <img
-            src="/uploads/profile-pictures/default.svg"
+            src={`/uploads/profile-pictures/${user.avatar}`}
             width="150px"
             height="200px"
           />

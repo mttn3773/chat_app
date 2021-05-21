@@ -3,6 +3,7 @@ export interface IUser {
   username: string;
   email: string;
   verified: boolean;
+  avatar: string;
 }
 
 export interface ICreateUser {

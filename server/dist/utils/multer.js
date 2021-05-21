@@ -6,10 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.upload = exports.storage = void 0;
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
+const config_1 = __importDefault(require("../config"));
 exports.storage = multer_1.default.diskStorage({
-    destination: "../client/public/uploads/profile-pictures",
-    filename: (_req, file, cb) => {
-        cb(null, file.fieldname + "-" + Date.now() + path_1.default.extname(file.originalname));
+    destination: config_1.default.folders.profilePicturesFolder,
+    filename: (req, file, cb) => {
+        if (!req.user) {
+            return cb({ message: "You are not authenticated", name: "Authentication error" }, "");
+        }
+        cb(null, `id=${req.user.id}` +
+            "-" +
+            Date.now() +
+            path_1.default.extname(file.originalname));
     },
 });
 exports.upload = multer_1.default({
@@ -17,7 +24,7 @@ exports.upload = multer_1.default({
     limits: {
         fileSize: 1000000,
     },
-    fileFilter: (req, file, cb) => {
+    fileFilter: (_req, file, cb) => {
         checkFileType(file, cb);
     },
 }).single("image");

@@ -1,11 +1,21 @@
 import multer from "multer";
 import path from "path";
+import config from "../config";
 export const storage = multer.diskStorage({
-  destination: "../client/public/uploads/profile-pictures",
-  filename: (_req, file, cb) => {
+  destination: config.folders.profilePicturesFolder,
+  filename: (req, file, cb) => {
+    if (!req.user) {
+      return cb(
+        { message: "You are not authenticated", name: "Authentication error" },
+        ""
+      );
+    }
     cb(
       null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      `id=${(req.user as any).id}` +
+        "-" +
+        Date.now() +
+        path.extname(file.originalname)
     );
   },
 });
@@ -15,7 +25,7 @@ export const upload = multer({
   limits: {
     fileSize: 1000000,
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (_req, file, cb) => {
     checkFileType(file, cb);
   },
 }).single("image");

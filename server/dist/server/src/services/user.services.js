@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateUserAvatar = exports.resetPasswordService = exports.deleteUserService = exports.getAllUsersService = exports.createUserService = exports.validateUserData = exports.verifyUserService = exports.sendVerificationEmailService = exports.sendResetPasswordEmailService = exports.findUserByEmail = void 0;
 const argon2_1 = require("argon2");
-const fs_1 = require("fs");
 const jsonwebtoken_1 = require("jsonwebtoken");
 const config_1 = __importDefault(require("../config"));
 const User_1 = require("../entity/User");
@@ -138,6 +137,7 @@ const getAllUsersService = () => __awaiter(void 0, void 0, void 0, function* () 
         return apiResponse_1.successResponse({ data: { users } });
     }
     catch (error) {
+        console.log(error);
         return apiResponse_1.errorResponse({});
     }
 });
@@ -169,17 +169,6 @@ const resetPasswordService = (password, token) => __awaiter(void 0, void 0, void
     }
 });
 exports.resetPasswordService = resetPasswordService;
-const updateUserAvatar = (user, avatar) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        if (!(user.avatar === config_1.default.folders.defaultProfilePicture)) {
-            fs_1.unlink(`${config_1.default.folders.profilePicturesFolder}/${user.avatar}`, () => { });
-        }
-        yield User_1.User.update({ id: user.id }, { avatar });
-        return { status: 200, response: { success: true, msg: "Image uploaded" } };
-    }
-    catch (error) {
-        return apiResponse_1.errorResponse({});
-    }
-});
+const updateUserAvatar = (user) => __awaiter(void 0, void 0, void 0, function* () { });
 exports.updateUserAvatar = updateUserAvatar;
 //# sourceMappingURL=user.services.js.map

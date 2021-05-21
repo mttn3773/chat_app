@@ -10,6 +10,9 @@
     display: flex;
     flex-direction: column;
     background: #efefef;
+    img {
+      object-fit: cover;
+    }
   }
   .user-info {
     width: 100%;

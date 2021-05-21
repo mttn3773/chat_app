@@ -43,7 +43,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    typeorm_1.Column({ default: config_1.default.folders.defaultProfilePicture }),
+    typeorm_1.Column({ default: `${config_1.default.folders.profilePicturesFolder}/default.svg` }),
     __metadata("design:type", String)
 ], User.prototype, "avatar", void 0);
 __decorate([

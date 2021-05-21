@@ -21,6 +21,8 @@ const ORM_CONFIG = {
         subscribersDir: "src/subscriber",
     },
 };
+const PROFILE_PICTURES_FOLDER = "../client/public/uploads/profile-pictures";
+const DEFAULT_PROFILE_PICTURE = "default.svg";
 const JWT_SERCRET = process.env.JWT_SECRET;
 const PORT = process.env.PORT || 4000;
 exports.SESSION_SECRET = process.env.SESSION_SECRET;
@@ -46,6 +48,10 @@ exports.default = {
     },
     server: {
         port: PORT,
+    },
+    folders: {
+        profilePicturesFolder: PROFILE_PICTURES_FOLDER,
+        defaultProfilePicture: DEFAULT_PROFILE_PICTURE,
     },
 };
 //# sourceMappingURL=index.js.map

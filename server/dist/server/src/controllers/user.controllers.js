@@ -91,7 +91,7 @@ const resetPassword = (req, res, _next) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.resetPassword = resetPassword;
 const setAvatar = (req, res, _next) => {
-    multer_1.upload(req, res, (err) => __awaiter(void 0, void 0, void 0, function* () {
+    multer_1.upload(req, res, (err) => {
         try {
             if (err) {
                 return res
@@ -108,10 +108,12 @@ const setAvatar = (req, res, _next) => {
                 })
                     .end();
             }
-            const { response, status } = yield user_services_1.updateUserAvatar(req.user, req.file.filename);
             return res
-                .status(status)
-                .json(Object.assign({}, response))
+                .status(200)
+                .json({
+                success: true,
+                msg: "Image Uploaded",
+            })
                 .end();
         }
         catch (error) {
@@ -123,7 +125,7 @@ const setAvatar = (req, res, _next) => {
             })
                 .end();
         }
-    }));
+    });
 };
 exports.setAvatar = setAvatar;
 //# sourceMappingURL=user.controllers.js.map
