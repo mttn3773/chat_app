@@ -27,7 +27,11 @@ const index_1 = require("./config/index");
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const passport_2 = require("./utils/passport");
+const socket_io_1 = require("socket.io");
+const http_1 = require("http");
 const app = express_1.default();
+const server = http_1.createServer(app);
+const io = new socket_io_1.Server(server);
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield typeorm_1.createConnection(config_1.default.ormConfig);
@@ -40,10 +44,17 @@ const app = express_1.default();
         app.use(express_session_1.default(Object.assign(Object.assign({}, config_1.default.session), { store: new RedisStore({ client: redisClient, disableTouch: true }) })));
         app.use(passport_1.default.initialize());
         app.use(passport_1.default.session());
+        io.on("connection", (socket) => {
+            console.log(`User connected`);
+            socket.emit("your id", socket.id);
+            socket.on("send message", (body) => {
+                io.emit("message", body);
+            });
+        });
         passport_1.default.use(passport_2.localStrategy);
         app.use("/api/users", user_routes_1.default);
         app.use("/api/auth", auth_routes_1.default);
-        app.listen(config_1.default.server.port, () => {
+        server.listen(config_1.default.server.port, () => {
             console.log(`App is running on port ${config_1.default.server.port}`);
         });
     }

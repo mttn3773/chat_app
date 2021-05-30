@@ -8,6 +8,8 @@ interface ProfilePageProps {}
 export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
   const { state } = useContext(DataContext);
   const { user } = state;
+  console.log(user);
+
   if (!user) return null;
   return <ProfileContent user={user} />;
 };

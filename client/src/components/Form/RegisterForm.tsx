@@ -50,9 +50,6 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({}) => {
     password: "",
     confirm_password: "",
   };
-  if (state.user) {
-    return <Redirect to="/" />;
-  }
   return (
     <div className="form-container">
       <Formik

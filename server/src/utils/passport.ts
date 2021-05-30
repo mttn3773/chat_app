@@ -10,7 +10,7 @@ export const localStrategy = new Strategy(
       // Check if user exists
       const user = await User.findOne(
         { email },
-        { select: ["password", "email", "id", "username"] }
+        { select: ["password", "email", "id", "username", "avatar"] }
         // Use select option since password is not selectable by default
       );
       if (!user) {

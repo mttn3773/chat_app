@@ -1,4 +1,4 @@
-const baseUrl = `${window.location.protocol}//${window.location.host}/`;
+export const baseUrl = `${window.location.protocol}//${window.location.host}/`;
 
 const ENDPOINTS = {
   login: baseUrl + "api/auth/login",

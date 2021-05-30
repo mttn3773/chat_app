@@ -9,6 +9,7 @@ import { DataContext } from "../../store/GlobalState";
 import { setUser } from "../../store/Actionst";
 import { dispatchNotify } from "../../utils/dispatchNotify";
 import { InputField } from "./InputField";
+import { parse } from "query-string";
 
 interface LoginFormProps {}
 
@@ -42,9 +43,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({}) => {
     email: "",
     password: "",
   };
-  if (state.user) {
-    return <Redirect to="/" />;
-  }
+
   return (
     <div className="form-container">
       <Formik
