@@ -1,20 +1,21 @@
-import "reflect-metadata";
 import { json, urlencoded } from "body-parser";
 import connectRedis from "connect-redis";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import session from "express-session";
+import { createServer } from "http";
 import passport from "passport";
 import { createClient } from "redis";
+import "reflect-metadata";
+import { Server } from "socket.io";
 import { createConnection } from "typeorm";
 import config from "./config";
 import { SESSION_SECRET } from "./config/index";
+import { IAllUsers } from "./interfaces/socket.interfaces";
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import { localStrategy } from "./utils/passport";
-import { Server } from "socket.io";
-import { createServer } from "http";
 
 const app = express();
 const server = createServer(app);
@@ -37,11 +38,22 @@ const io = new Server(server);
     );
     app.use(passport.initialize());
     app.use(passport.session());
+
+    let allUsers: IAllUsers[] = [];
     io.on("connection", (socket) => {
       console.log(`User connected`);
+      socket.on("join server", ({ username }) => {
+        const user = { username, id: socket.id };
+        allUsers.push(user);
+        io.emit("new user", allUsers);
+      });
       socket.emit("your id", socket.id);
       socket.on("send message", (body) => {
         io.emit("message", body);
+      });
+      socket.on("disconnect", () => {
+        allUsers = allUsers.filter(({ id }) => id !== socket.id);
+        io.emit("new user", allUsers);
       });
     });
     passport.use(localStrategy);
