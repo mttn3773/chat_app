@@ -1,3 +1,4 @@
+import { socketLogic } from "./socket/index";
 import { json, urlencoded } from "body-parser";
 import connectRedis from "connect-redis";
 import cookieParser from "cookie-parser";
@@ -39,22 +40,9 @@ const io = new Server(server);
     app.use(passport.initialize());
     app.use(passport.session());
 
-    let allUsers: IAllUsers[] = [];
     io.on("connection", (socket) => {
       console.log(`User connected`);
-      socket.on("join server", ({ username }) => {
-        const user = { username, id: socket.id };
-        allUsers.push(user);
-        io.emit("new user", allUsers);
-      });
-      socket.emit("your id", socket.id);
-      socket.on("send message", (body) => {
-        io.emit("message", body);
-      });
-      socket.on("disconnect", () => {
-        allUsers = allUsers.filter(({ id }) => id !== socket.id);
-        io.emit("new user", allUsers);
-      });
+      socketLogic(socket, io);
     });
     passport.use(localStrategy);
     app.use("/api/users", userRouter);

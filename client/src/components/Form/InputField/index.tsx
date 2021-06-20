@@ -11,7 +11,7 @@ export const InputField: React.FC<InputFieldProps> = ({ name, ...props }) => {
     <div className="field-container">
       <label htmlFor={name}>{name.toCapitalize()}</label>
       <ErrorMessage name={name} component="div" className="error-message" />
-      <input {...field} {...props} name={name}></input>
+      <input {...field} {...props} name={name} />
     </div>
   );
 };

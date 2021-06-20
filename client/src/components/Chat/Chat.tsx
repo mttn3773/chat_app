@@ -1,50 +1,23 @@
 import { Form, Formik } from "formik";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import io, { Socket } from "socket.io-client";
-import { DefaultEventsMap } from "socket.io-client/build/typed-events";
-import { baseUrl } from "../../config";
-import { DataContext } from "../../store/GlobalState";
+import React from "react";
+import { IMessage, ISocketUser } from "../../interfaces/socket-io.interfaces";
 import { InputField } from "../Form/InputField";
-import { Message } from "./Message/Message";
 import "./Chat.scss";
-import { IUser } from "../../interfaces/user.interface";
+import { Message } from "./Message/Message";
 
-interface ChatProps {}
-
-interface IMessage {
-  body: string;
-  id: string;
-  user: IUser;
+interface ChatProps {
+  room: string;
+  messages: IMessage[];
+  sendMessage: (message: string) => void;
+  users: ISocketUser[];
 }
 
-export const Chat: React.FC<ChatProps> = ({}) => {
-  const [userID, setUserID] = useState<string>();
-  const [users, setUsers] = useState<any[]>();
-  const [messages, setMessages] = useState<IMessage[]>([]);
-  const { state } = useContext(DataContext);
-  const { user } = state;
-  const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
-  useEffect(() => {
-    socketRef.current = io("/");
-    socketRef.current.on("your id", (id) => {
-      setUserID(id);
-    });
-    socketRef.current.emit("join server", {
-      username: user?.username,
-    });
-    socketRef.current.on("message", (message) => {
-      setMessages((prev) => [...prev, message]);
-    });
-    socketRef.current.on("new user", (users) => setUsers(users));
-  }, [baseUrl]);
-  const sendMessage = (message: string) => {
-    const messageObj = {
-      body: message,
-      user,
-      id: userID,
-    };
-    socketRef.current?.emit("send message", messageObj);
-  };
+export const Chat: React.FC<ChatProps> = ({
+  room,
+  messages,
+  sendMessage,
+  users,
+}) => {
   const initialValues = {
     message: "",
   };
@@ -52,8 +25,8 @@ export const Chat: React.FC<ChatProps> = ({}) => {
     <div className="chat-container">
       <p>{users?.map((user) => user.username)}</p>
       <div className="messages-container">
-        {messages.map(({ body, user }) => {
-          return <Message user={user} body={body} />;
+        {messages.map(({ body, user }, index) => {
+          return <Message key={index} user={user} body={body} />;
         })}
       </div>
       <Formik
@@ -65,7 +38,7 @@ export const Chat: React.FC<ChatProps> = ({}) => {
       >
         {({ isSubmitting }) => (
           <Form>
-            <InputField name="message" />
+            <InputField name="message" autoComplete="off" />
             <button disabled={isSubmitting} type="submit">
               Send
             </button>

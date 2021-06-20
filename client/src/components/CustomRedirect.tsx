@@ -16,15 +16,16 @@ export const CustomRedirect: React.FC<CustomRedirectProps> = ({
   const currentUrl = window.location.pathname;
   if (redirectToNext) {
     let nextUrl: string;
-    const { next } = parse(window.location.search);
-    (() => {
-      if (!next?.length) return (nextUrl = "");
-      if (next && next?.length > 1) return (nextUrl = next[0]);
-      return (nextUrl = next as string);
-    })();
-    return <Redirect to={`/${nextUrl}`} />;
+    let { next } = parse(window.location.search);
+    if (!next) {
+      return <Redirect to={`/`} />;
+    }
+    if (next instanceof Array) {
+      next = next[0];
+    }
+    nextUrl = next;
+    return <Redirect to={`${nextUrl}`} />;
   }
   const nextQueryParam = addNextQueryParam ? currentUrl : "";
-
   return <Redirect to={`/${to}?next=${nextQueryParam}`} />;
 };

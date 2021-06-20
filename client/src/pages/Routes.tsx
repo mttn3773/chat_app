@@ -9,6 +9,7 @@ import { ResetPasswordPage } from "./ResetPasswordPage";
 import { VerifyPage } from "./VerifyPage/";
 import { Chat } from "../components/Chat/Chat";
 import { CustomRedirect } from "../components/CustomRedirect";
+import { ChatPage } from "./ChatPage/ChatPage";
 
 interface RoutesProps {}
 
@@ -18,16 +19,16 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
 
   return (
     <BrowserRouter>
-      {/* Routes when logged in */}
       {!!state.user ? (
         <Switch>
+          {/* Routes when logged in */}
           <Route exact path="/" />
           <Route path="/verify" component={VerifyPage} />
           <Route exact path="/profile">
             <Redirect to={`/profile/${state.user.id}`} />
           </Route>
           <Route path="/profile/:id" component={ProfilePage} />
-          <Route path="/chat" component={Chat} />
+          <Route path="/chat" component={ChatPage} />
           <CustomRedirect to="/" redirectToNext />
         </Switch>
       ) : (
