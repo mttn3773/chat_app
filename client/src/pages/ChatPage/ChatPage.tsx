@@ -28,7 +28,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({}) => {
     socketRef.current.emit("join server", {
       username: user?.username,
     });
-
+    // JOIN ROOM
     socketRef.current.emit("join room", "general");
     // RECIEVE MESSAGES FROM SERVER
     socketRef.current.on("message", (message) => {
@@ -50,11 +50,6 @@ export const ChatPage: React.FC<ChatPageProps> = ({}) => {
       id: userID,
     };
     socketRef.current?.emit("send message", messageObj);
-    if (!user) return;
-    setMessages((prev) => [
-      ...prev,
-      { body: message, user, id: userID || "", room },
-    ]);
   };
   const changeRoom = (room: string) => {
     socketRef.current?.emit("join room", room);

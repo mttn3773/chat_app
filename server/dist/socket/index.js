@@ -21,6 +21,7 @@ const socketLogic = (socket, io) => {
     });
     socket.on("send message", ({ body, to, user }) => {
         socket.to(to).emit("message", { body, user, id: socket.id, room: to });
+        socket.emit("message", { body, user, id: socket.id, room: to });
     });
     socket.on("disconnect", () => {
         console.log("User Disconnected");

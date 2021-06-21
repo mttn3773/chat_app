@@ -30,6 +30,7 @@ export const socketLogic = (
   // ON RECIEVING MESSAGE FROM CLIENT
   socket.on("send message", ({ body, to, user }) => {
     socket.to(to).emit("message", { body, user, id: socket.id, room: to });
+    socket.emit("message", { body, user, id: socket.id, room: to });
   });
   // ON USER DISCONNECTING
   socket.on("disconnect", () => {
