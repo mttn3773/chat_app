@@ -23,7 +23,7 @@ export const Chat: React.FC<ChatProps> = ({
   };
   return (
     <div className="chat-container">
-      <p>{users?.map((user) => user.username)}</p>
+      <p>{users?.map((user) => JSON.stringify(user))}</p>
       <div className="messages-container">
         {messages.map(({ body, user }, index) => {
           return <Message key={index} user={user} body={body} />;

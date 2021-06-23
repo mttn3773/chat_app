@@ -3,9 +3,9 @@ import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "socket.io-client/build/typed-events";
 import { Chat } from "../../components/Chat/Chat";
 import { Rooms } from "../../components/Chat/Rooms/Rooms";
+import { Users } from "../../components/Chat/Users/Users";
 import { baseUrl } from "../../config";
 import { IMessage, ISocketUser } from "../../interfaces/socket-io.interfaces";
-import { IUser } from "../../interfaces/user.interface";
 import { DataContext } from "../../store/GlobalState";
 import "./ChatPage.scss";
 interface ChatPageProps {}
@@ -56,12 +56,15 @@ export const ChatPage: React.FC<ChatPageProps> = ({}) => {
   };
   return (
     <div className="chat-page">
-      <Rooms setRoom={changeRoom} room={room} />
+      <div className="channels-container">
+        <Rooms setRoom={changeRoom} room={room} />
+        <Users users={users} />
+      </div>
       <Chat
         room={room}
         messages={messages.filter((msg) => msg.room === room)}
         sendMessage={sendMessage}
-        users={users}
+        users={users.filter((user) => user.roomName === room)}
       />
     </div>
   );

@@ -10,12 +10,18 @@ const messages = {
 let allUsers = [];
 const socketLogic = (socket, io) => {
     socket.on("join server", ({ username }) => {
-        const user = { username, id: socket.id };
+        const user = { username, id: socket.id, roomName: "general" };
         allUsers.push(user);
         io.emit("new user", allUsers);
     });
     socket.emit("your id", socket.id);
     socket.on("join room", (roomName) => {
+        allUsers.map((user) => {
+            if (user.id === socket.id) {
+                user.roomName = roomName;
+            }
+        });
+        io.emit("new user", allUsers);
         socket.join(roomName);
         socket.emit("joined", roomName);
     });

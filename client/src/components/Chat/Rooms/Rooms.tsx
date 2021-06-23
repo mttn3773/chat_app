@@ -15,6 +15,7 @@ export const Rooms: React.FC<RoomsProps> = ({ setRoom, room }) => {
   };
   return (
     <div className="rooms-list">
+      <h2>ROOMS</h2>
       {CHANNELS.map((room, index) => {
         return (
           <a

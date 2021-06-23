@@ -1,6 +1,6 @@
 import { Socket, Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { IAllUsers } from "src/interfaces/socket.interfaces";
+import { ISocketUsers } from "src/interfaces/socket.interfaces";
 
 const messages = {
   general: [],
@@ -8,14 +8,14 @@ const messages = {
   channel2: [],
   channel3: [],
 };
-let allUsers: IAllUsers[] = [];
+let allUsers: ISocketUsers[] = [];
 export const socketLogic = (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>,
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>
 ) => {
   // USER JOINS SERVER
   socket.on("join server", ({ username }) => {
-    const user = { username, id: socket.id };
+    const user = { username, id: socket.id, roomName: "general" };
     allUsers.push(user); // Add user to users array
     io.emit("new user", allUsers);
   });
@@ -23,6 +23,12 @@ export const socketLogic = (
 
   // ON JOINING ROOM
   socket.on("join room", (roomName) => {
+    allUsers.map((user) => {
+      if (user.id === socket.id) {
+        user.roomName = roomName;
+      }
+    });
+    io.emit("new user", allUsers);
     socket.join(roomName);
     socket.emit("joined", roomName);
   });

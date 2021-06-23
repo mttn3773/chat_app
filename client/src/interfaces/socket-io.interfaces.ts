@@ -8,6 +8,7 @@ export interface IMessage {
 }
 
 export interface ISocketUser {
+  roomName: string;
   username: string;
   id: string;
 }
