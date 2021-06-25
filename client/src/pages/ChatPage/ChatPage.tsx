@@ -15,6 +15,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({}) => {
   const [userID, setUserID] = useState<string>();
   const [users, setUsers] = useState<ISocketUser[]>([]);
   const [messages, setMessages] = useState<IMessage[]>([]);
+  const [isPrivateMessage, setPrivateMessage] = useState<boolean>(false);
   const { state } = useContext(DataContext);
   const { user } = state;
   const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
@@ -48,8 +49,9 @@ export const ChatPage: React.FC<ChatPageProps> = ({}) => {
       user,
       to: room,
       id: userID,
+      isPrivate: isPrivateMessage,
     };
-    socketRef.current?.emit("send message", messageObj);
+    return socketRef.current?.emit("send message", messageObj);
   };
   const changeRoom = (room: string) => {
     socketRef.current?.emit("join room", room);
@@ -57,10 +59,19 @@ export const ChatPage: React.FC<ChatPageProps> = ({}) => {
   return (
     <div className="chat-page">
       <div className="channels-container">
-        <Rooms setRoom={changeRoom} room={room} />
-        <Users users={users} />
+        <Rooms
+          setMessageToChannel={() => setPrivateMessage(false)}
+          setRoom={changeRoom}
+          room={room}
+        />
+        <Users
+          setMessageToUser={() => setPrivateMessage(true)}
+          users={users}
+          setRoom={changeRoom}
+        />
       </div>
       <Chat
+        isPrivateMessage={isPrivateMessage}
         room={room}
         messages={messages.filter((msg) => msg.room === room)}
         sendMessage={sendMessage}

@@ -6,24 +6,27 @@ import "./Chat.scss";
 import { Message } from "./Message/Message";
 
 interface ChatProps {
+  isPrivateMessage: boolean;
   room: string;
   messages: IMessage[];
-  sendMessage: (message: string) => void;
+  sendMessage: (message: string, isPrivate: boolean) => void;
   users: ISocketUser[];
 }
 
 export const Chat: React.FC<ChatProps> = ({
-  room,
   messages,
   sendMessage,
   users,
+  isPrivateMessage,
 }) => {
   const initialValues = {
     message: "",
   };
   return (
     <div className="chat-container">
-      <p>{users?.map((user) => JSON.stringify(user))}</p>
+      <p>
+        {users?.map((user) => JSON.stringify({ ...user, isPrivateMessage }))}
+      </p>
       <div className="messages-container">
         {messages.map(({ body, user }, index) => {
           return <Message key={index} user={user} body={body} />;
@@ -32,7 +35,7 @@ export const Chat: React.FC<ChatProps> = ({
       <Formik
         initialValues={initialValues}
         onSubmit={async (values, { resetForm }) => {
-          sendMessage(values.message);
+          sendMessage(values.message, isPrivateMessage);
           return resetForm();
         }}
       >

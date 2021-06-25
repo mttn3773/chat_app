@@ -7,3 +7,11 @@ export interface ICreateUser {
 export interface IUserJwtPayload {
   id: number;
 }
+
+export interface IUser {
+  id: string;
+  username: string;
+  email: string;
+  verified: boolean;
+  avatar: string;
+}

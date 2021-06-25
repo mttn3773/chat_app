@@ -1,12 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.socketLogic = void 0;
-const messages = {
-    general: [],
-    channel1: [],
-    channel2: [],
-    channel3: [],
-};
 let allUsers = [];
 const socketLogic = (socket, io) => {
     socket.on("join server", ({ username }) => {
@@ -25,9 +19,14 @@ const socketLogic = (socket, io) => {
         socket.join(roomName);
         socket.emit("joined", roomName);
     });
-    socket.on("send message", ({ body, to, user }) => {
-        socket.to(to).emit("message", { body, user, id: socket.id, room: to });
-        socket.emit("message", { body, user, id: socket.id, room: to });
+    socket.on("send message", ({ body, to, user, id, isPrivate }) => {
+        if (isPrivate) {
+            socket.emit("message", { body, user, id: socket.id, room: to });
+            io.to(to).emit("message", { body, user, id: socket.id, room: id });
+        }
+        else {
+            io.to(to).emit("message", { body, user, id: socket.id, room: to });
+        }
     });
     socket.on("disconnect", () => {
         console.log("User Disconnected");

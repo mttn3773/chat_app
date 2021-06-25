@@ -4,12 +4,17 @@ import "./Rooms.scss";
 interface RoomsProps {
   setRoom: (room: string) => void;
   room: string;
+  setMessageToChannel: () => void;
 }
 
-export const Rooms: React.FC<RoomsProps> = ({ setRoom, room }) => {
+export const Rooms: React.FC<RoomsProps> = ({
+  setRoom,
+  setMessageToChannel,
+}) => {
   const [active, setActive] = useState<number>(0);
   const CHANNELS = ["general", "channel 1", "channel 2", "channel 3"];
   const handleClick = (channelName: string, index: number) => {
+    setMessageToChannel();
     setRoom(channelName);
     setActive(index);
   };

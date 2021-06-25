@@ -1,13 +1,10 @@
 import { Socket, Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { ISocketUsers } from "src/interfaces/socket.interfaces";
+import {
+  IMessagePayload,
+  ISocketUsers,
+} from "src/interfaces/socket.interfaces";
 
-const messages = {
-  general: [],
-  channel1: [],
-  channel2: [],
-  channel3: [],
-};
 let allUsers: ISocketUsers[] = [];
 export const socketLogic = (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>,
@@ -34,10 +31,17 @@ export const socketLogic = (
   });
 
   // ON RECIEVING MESSAGE FROM CLIENT
-  socket.on("send message", ({ body, to, user }) => {
-    socket.to(to).emit("message", { body, user, id: socket.id, room: to });
-    socket.emit("message", { body, user, id: socket.id, room: to });
-  });
+  socket.on(
+    "send message",
+    ({ body, to, user, id, isPrivate }: IMessagePayload) => {
+      if (isPrivate) {
+        socket.emit("message", { body, user, id: socket.id, room: to });
+        io.to(to).emit("message", { body, user, id: socket.id, room: id });
+      } else {
+        io.to(to).emit("message", { body, user, id: socket.id, room: to });
+      }
+    }
+  );
   // ON USER DISCONNECTING
   socket.on("disconnect", () => {
     console.log("User Disconnected");

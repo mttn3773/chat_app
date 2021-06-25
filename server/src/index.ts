@@ -13,7 +13,6 @@ import { Server } from "socket.io";
 import { createConnection } from "typeorm";
 import config from "./config";
 import { SESSION_SECRET } from "./config/index";
-import { IAllUsers } from "./interfaces/socket.interfaces";
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import { localStrategy } from "./utils/passport";
@@ -39,7 +38,6 @@ const io = new Server(server);
     );
     app.use(passport.initialize());
     app.use(passport.session());
-
     io.on("connection", (socket) => {
       console.log(`User connected`);
       socketLogic(socket, io);
@@ -47,7 +45,6 @@ const io = new Server(server);
     passport.use(localStrategy);
     app.use("/api/users", userRouter);
     app.use("/api/auth", authRouter);
-
     server.listen(config.server.port, () => {
       console.log(`App is running on port ${config.server.port}`);
     });
