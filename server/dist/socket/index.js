@@ -22,10 +22,22 @@ const socketLogic = (socket, io) => {
     socket.on("send message", ({ body, to, user, id, isPrivate }) => {
         if (isPrivate) {
             socket.emit("message", { body, user, id: socket.id, room: to });
-            io.to(to).emit("message", { body, user, id: socket.id, room: id });
+            io.to(to).emit("message", {
+                body,
+                user,
+                id: socket.id,
+                room: id,
+                isPrivate,
+            });
         }
         else {
-            io.to(to).emit("message", { body, user, id: socket.id, room: to });
+            io.to(to).emit("message", {
+                body,
+                user,
+                id: socket.id,
+                room: to,
+                isPrivate,
+            });
         }
     });
     socket.on("disconnect", () => {

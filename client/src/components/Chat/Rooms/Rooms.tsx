@@ -10,13 +10,18 @@ interface RoomsProps {
 export const Rooms: React.FC<RoomsProps> = ({
   setRoom,
   setMessageToChannel,
+  room,
 }) => {
-  const [active, setActive] = useState<number>(0);
   const CHANNELS = ["general", "channel 1", "channel 2", "channel 3"];
   const handleClick = (channelName: string, index: number) => {
     setMessageToChannel();
     setRoom(channelName);
-    setActive(index);
+  };
+  const isActive = (roomName: string): string => {
+    if (roomName === room) {
+      return "active";
+    }
+    return "";
   };
   return (
     <div className="rooms-list">
@@ -26,7 +31,7 @@ export const Rooms: React.FC<RoomsProps> = ({
           <a
             key={index}
             onClick={() => handleClick(room, index)}
-            className={`${index === active ? "active" : ""}`}
+            className={isActive(room)}
           >
             {room.toCapitalize()}
           </a>

@@ -4,7 +4,6 @@ import {
   IMessagePayload,
   ISocketUsers,
 } from "src/interfaces/socket.interfaces";
-
 let allUsers: ISocketUsers[] = [];
 export const socketLogic = (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>,
@@ -17,7 +16,6 @@ export const socketLogic = (
     io.emit("new user", allUsers);
   });
   socket.emit("your id", socket.id);
-
   // ON JOINING ROOM
   socket.on("join room", (roomName) => {
     allUsers.map((user) => {
@@ -29,16 +27,27 @@ export const socketLogic = (
     socket.join(roomName);
     socket.emit("joined", roomName);
   });
-
   // ON RECIEVING MESSAGE FROM CLIENT
   socket.on(
     "send message",
     ({ body, to, user, id, isPrivate }: IMessagePayload) => {
       if (isPrivate) {
         socket.emit("message", { body, user, id: socket.id, room: to });
-        io.to(to).emit("message", { body, user, id: socket.id, room: id });
+        io.to(to).emit("message", {
+          body,
+          user,
+          id: socket.id,
+          room: id,
+          isPrivate,
+        });
       } else {
-        io.to(to).emit("message", { body, user, id: socket.id, room: to });
+        io.to(to).emit("message", {
+          body,
+          user,
+          id: socket.id,
+          room: to,
+          isPrivate,
+        });
       }
     }
   );

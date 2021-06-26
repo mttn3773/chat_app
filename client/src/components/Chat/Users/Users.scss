@@ -3,4 +3,10 @@
   gap: 1rem;
   flex-direction: column;
   color: #efefef;
+  a,
+  p {
+    &.active {
+      background: #706f6f;
+    }
+  }
 }

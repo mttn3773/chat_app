@@ -5,6 +5,7 @@ export interface IMessage {
   id: string;
   user: IUser;
   room: string;
+  isPrivate: boolean;
 }
 
 export interface ISocketUser {
