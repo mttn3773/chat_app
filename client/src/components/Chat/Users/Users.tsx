@@ -32,9 +32,12 @@ export const Users: React.FC<UsersProps> = ({
       prev.filter((messange) => messange.user.username !== username)
     );
   };
-  const getMessagesFromUser = (username: string) => {
-    return newMessanges.filter((message) => message.user.username === username)
-      .length;
+  const getNewMessagesFromUser = (username: string) => {
+    const newMessagesCount = newMessanges.filter(
+      (message) => message.user.username === username
+    ).length;
+    if (!newMessagesCount) return;
+    return <i className="new-messages-icon">{newMessagesCount}</i>;
   };
   const isActive = (roomName: string): string => {
     if (roomName === room) {
@@ -45,21 +48,21 @@ export const Users: React.FC<UsersProps> = ({
   return (
     <div className="users-container">
       <h2>USERS</h2>
-      {users.map(({ username, id }) => {
-        if (state.user?.username === username) {
+      {users.map(({ user, id }) => {
+        if (state.user?.username === user.username) {
           return (
             <p className={isActive(id)} key={id}>
-              {username}
+              {user.username}
             </p>
           );
         }
         return (
           <a
             className={isActive(id)}
-            onClick={() => handleClick(id, username)}
+            onClick={() => handleClick(id, user.username)}
             key={id}
           >
-            {username} {getMessagesFromUser(username)}
+            {user.username} {getNewMessagesFromUser(user.username)}
           </a>
         );
       })}

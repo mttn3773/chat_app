@@ -10,9 +10,9 @@ export const socketLogic = (
   io: Server<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap>
 ) => {
   // USER JOINS SERVER
-  socket.on("join server", ({ username }) => {
-    const user = { username, id: socket.id, roomName: "general" };
-    allUsers.push(user); // Add user to users array
+  socket.on("join server", ({ user }) => {
+    const newUser = { user, id: socket.id, roomName: "general" };
+    allUsers.push(newUser); // Add user to users array
     io.emit("new user", allUsers);
   });
   socket.emit("your id", socket.id);

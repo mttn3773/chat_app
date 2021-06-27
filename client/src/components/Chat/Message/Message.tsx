@@ -10,8 +10,9 @@ interface MessageProps {
 export const Message: React.FC<MessageProps> = ({ body, user }) => {
   return (
     <div className="message-body">
-      <p>{user.username}</p>
-      <p>{body}</p>
+      <p>
+        <a href={`/profile/${user.id}`}>{user.username}</a>: {body}
+      </p>
     </div>
   );
 };

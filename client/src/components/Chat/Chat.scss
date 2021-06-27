@@ -1,8 +1,24 @@
-.chat-container {
+.main-conteiner {
+  display: flex;
   width: 80%;
   border: 1px solid #efefef;
-  padding: 1rem 1rem;
+  padding: 2rem 2rem;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  max-height: 500px;
+  overflow-y: scroll;
+  .chat-container {
+    padding-right: 1em;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+  }
+  .user-list {
+    padding: 0.6em 0.6em;
+    color: #efefef;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    width: 10%;
+    border-left: 1px solid #efefef;
+  }
 }

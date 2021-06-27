@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.socketLogic = void 0;
 let allUsers = [];
 const socketLogic = (socket, io) => {
-    socket.on("join server", ({ username }) => {
-        const user = { username, id: socket.id, roomName: "general" };
-        allUsers.push(user);
+    socket.on("join server", ({ user }) => {
+        const newUser = { user, id: socket.id, roomName: "general" };
+        allUsers.push(newUser);
         io.emit("new user", allUsers);
     });
     socket.emit("your id", socket.id);

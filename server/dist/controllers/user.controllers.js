@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setAvatar = exports.resetPassword = exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getAllUsers = void 0;
+exports.setAvatar = exports.resetPassword = exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getUserById = exports.getAllUsers = void 0;
 const multer_1 = require("../utils/multer");
 const user_services_1 = require("./../services/user.services");
 const getAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,6 +20,15 @@ const getAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, func
         .end();
 });
 exports.getAllUsers = getAllUsers;
+const getUserById = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { status, response } = yield user_services_1.findUserByIdService(id);
+    return res
+        .status(status)
+        .json(Object.assign({}, response))
+        .end();
+});
+exports.getUserById = getUserById;
 const deleteAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = yield user_services_1.deleteUserService();
     return res

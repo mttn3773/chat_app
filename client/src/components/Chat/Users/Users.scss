@@ -5,8 +5,15 @@
   color: #efefef;
   a,
   p {
+    padding: 0.5em;
     &.active {
       background: #706f6f;
     }
+  }
+  .new-messages-icon {
+    font-style: normal;
+    padding: 0.2em 0.4em;
+    border-radius: 50%;
+    background-color: rgb(179, 80, 80);
   }
 }

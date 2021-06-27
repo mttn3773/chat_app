@@ -7,6 +7,7 @@ import {
   deleteAllUsers,
   forgotPassword,
   getAllUsers,
+  getUserById,
   resetPassword,
   sendVerificationLink,
   setAvatar,
@@ -17,6 +18,9 @@ const router = Router();
 
 // Get Users
 router.get("", getAllUsers);
+
+// Get User By Id
+router.get("/:id", getUserById);
 
 // Verify Account
 router.put(

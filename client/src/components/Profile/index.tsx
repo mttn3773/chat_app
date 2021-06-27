@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useContext } from "react";
 import { IUser } from "../../interfaces/user.interface";
+import { DataContext } from "../../store/GlobalState";
 import { ImageUploadDialog } from "../ImageUpload/ImageUploadDialog";
 import "./Profile.scss";
 interface ProfileContentProps {
@@ -7,6 +9,7 @@ interface ProfileContentProps {
 }
 
 export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
+  const { state } = useContext(DataContext);
   const [imageUploadDialogOpen, setImageUploadDialogOpen] =
     useState<boolean>(false);
   const handleOpenDialog = (
@@ -28,7 +31,9 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
             width="150px"
             height="200px"
           />
-          <button onClick={handleOpenDialog}> Change avatar </button>
+          {state.user === user && (
+            <button onClick={handleOpenDialog}> Change avatar </button>
+          )}
         </div>
         <div className="user-info">
           <p>Username: {user.username}</p>

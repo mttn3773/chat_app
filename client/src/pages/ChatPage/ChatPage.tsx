@@ -28,7 +28,7 @@ export const ChatPage: React.FC<ChatPageProps> = ({}) => {
     });
     // JOIN SERVER
     socketRef.current.emit("join server", {
-      username: user?.username,
+      user,
     });
     // JOIN ROOM
     socketRef.current.emit("join room", "general");

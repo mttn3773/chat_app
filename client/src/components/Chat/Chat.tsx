@@ -23,31 +23,35 @@ export const Chat: React.FC<ChatProps> = ({
     message: "",
   };
   return (
-    <div className="chat-container">
-      <p>
-        {users?.map((user) => JSON.stringify({ ...user, isPrivateMessage }))}
-      </p>
-      <div className="messages-container">
-        {messages.map(({ body, user }, index) => {
-          return <Message key={index} user={user} body={body} />;
-        })}
+    <div className="main-conteiner">
+      <div className="chat-container">
+        <div className="messages-container">
+          {messages.map(({ body, user }, index) => {
+            return <Message key={index} user={user} body={body} />;
+          })}
+        </div>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={async (values, { resetForm }) => {
+            sendMessage(values.message, isPrivateMessage);
+            return resetForm();
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <InputField name="message" autoComplete="off" />
+              <button disabled={isSubmitting} type="submit">
+                Send
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={async (values, { resetForm }) => {
-          sendMessage(values.message, isPrivateMessage);
-          return resetForm();
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <InputField name="message" autoComplete="off" />
-            <button disabled={isSubmitting} type="submit">
-              Send
-            </button>
-          </Form>
-        )}
-      </Formik>
+      <div className="user-list">
+        {users?.map((user) => (
+          <a href={`/profile/${user.user.id}`}>{user.user.username}</a>
+        ))}
+      </div>
     </div>
   );
 };

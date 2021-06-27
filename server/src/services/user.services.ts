@@ -45,6 +45,22 @@ export const sendResetPasswordEmailService = async (
   }
 };
 
+export const findUserByIdService = async (
+  id: string
+): Promise<IApiResponse> => {
+  try {
+    const user = await User.findOne(id);
+    if (!user)
+      return errorResponse({
+        status: 500,
+        errors: [{ msg: "Couldn't fetch the user" }],
+      });
+    return successResponse({ data: { user } });
+  } catch (error) {
+    return errorResponse({});
+  }
+};
+
 export const sendVerificationEmailService = async (
   user: User,
   req: Request

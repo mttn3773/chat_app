@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserAvatar = exports.resetPasswordService = exports.deleteUserService = exports.getAllUsersService = exports.createUserService = exports.validateUserData = exports.verifyUserService = exports.sendVerificationEmailService = exports.sendResetPasswordEmailService = exports.findUserByEmail = void 0;
+exports.updateUserAvatar = exports.resetPasswordService = exports.deleteUserService = exports.getAllUsersService = exports.createUserService = exports.validateUserData = exports.verifyUserService = exports.sendVerificationEmailService = exports.findUserByIdService = exports.sendResetPasswordEmailService = exports.findUserByEmail = void 0;
 const argon2_1 = require("argon2");
 const fs_1 = require("fs");
 const jsonwebtoken_1 = require("jsonwebtoken");
@@ -55,6 +55,21 @@ const sendResetPasswordEmailService = (user, req) => __awaiter(void 0, void 0, v
     }
 });
 exports.sendResetPasswordEmailService = sendResetPasswordEmailService;
+const findUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield User_1.User.findOne(id);
+        if (!user)
+            return apiResponse_1.errorResponse({
+                status: 500,
+                errors: [{ msg: "Couldn't fetch the user" }],
+            });
+        return apiResponse_1.successResponse({ data: { user } });
+    }
+    catch (error) {
+        return apiResponse_1.errorResponse({});
+    }
+});
+exports.findUserByIdService = findUserByIdService;
 const sendVerificationEmailService = (user, req) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, id } = user;

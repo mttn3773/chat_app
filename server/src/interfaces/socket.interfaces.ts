@@ -2,7 +2,7 @@ import { IUser } from "./user.interface";
 
 export interface ISocketUsers {
   roomName: string;
-  username: string;
+  user: IUser;
   id: string;
 }
 

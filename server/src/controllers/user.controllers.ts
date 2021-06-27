@@ -6,6 +6,7 @@ import {
   createUserService,
   deleteUserService,
   findUserByEmail,
+  findUserByIdService,
   getAllUsersService,
   resetPasswordService,
   sendResetPasswordEmailService,
@@ -19,6 +20,19 @@ export const getAllUsers = async (
   _next: NextFunction
 ) => {
   const { status, response } = await getAllUsersService();
+  return res
+    .status(status)
+    .json({ ...response })
+    .end();
+};
+
+export const getUserById = async (
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  const { id } = req.params;
+  const { status, response } = await findUserByIdService(id);
   return res
     .status(status)
     .json({ ...response })
