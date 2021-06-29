@@ -22,7 +22,9 @@ export const Routes: React.FC<RoutesProps> = ({}) => {
       {!!state.user ? (
         <Switch>
           {/* Routes when logged in */}
-          <Route exact path="/" />
+          <Route exact path="/">
+            <Redirect to={`/profile/${state.user.id}`} />
+          </Route>
           <Route path="/verify" component={VerifyPage} />
           <Route exact path="/profile">
             <Redirect to={`/profile/${state.user.id}`} />

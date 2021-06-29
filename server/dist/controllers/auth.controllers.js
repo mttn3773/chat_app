@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.me = void 0;
+exports.login = exports.logout = exports.me = void 0;
 const auth_services_1 = require("./../services/auth.services");
 const me = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = auth_services_1.meService(req);
@@ -19,6 +19,14 @@ const me = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
         .end();
 });
 exports.me = me;
+const logout = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { status, response } = yield auth_services_1.logoutService(req);
+    return res
+        .status(status)
+        .json(Object.assign({}, response))
+        .end();
+});
+exports.logout = logout;
 const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     auth_services_1.loginService(req, res, next);
 });

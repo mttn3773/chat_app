@@ -31,7 +31,7 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ user }) => {
             width="150px"
             height="200px"
           />
-          {state.user === user && (
+          {state.user?.id === user.id && (
             <button onClick={handleOpenDialog}> Change avatar </button>
           )}
         </div>

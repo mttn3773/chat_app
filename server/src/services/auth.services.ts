@@ -7,6 +7,15 @@ export const meService = (req: Request): IApiResponse => {
   return successResponse({ data: { user: req.user || null } });
 };
 
+export const logoutService = async (req: Request): Promise<IApiResponse> => {
+  try {
+    req.logout();
+    return successResponse({ msg: "Logged out" });
+  } catch (error) {
+    return errorResponse({});
+  }
+};
+
 export const loginService = (
   req: Request,
   res: Response,

@@ -11,7 +11,6 @@ import { config } from "../config";
 interface ProfilePageProps {}
 
 export const ProfilePage: React.FC<ProfilePageProps> = ({}) => {
-  const { state } = useContext(DataContext);
   const id = window.location.href.split("/").pop();
   const [user, setUser] = useState<IUser | null>(null);
   useEffect(() => {

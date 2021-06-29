@@ -1,3 +1,4 @@
+import { Layout } from "./components/Layout/Layout";
 import { Notify } from "./components/Notify/Notify";
 import { Routes } from "./pages/Routes";
 import { GlobalState } from "./store/GlobalState";
@@ -6,8 +7,10 @@ import "./utils/prototypes";
 function App() {
   return (
     <GlobalState>
-      <Notify />
-      <Routes />
+      <Layout>
+        <Notify />
+        <Routes />
+      </Layout>
     </GlobalState>
   );
 }
