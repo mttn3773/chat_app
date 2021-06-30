@@ -1,16 +1,18 @@
-import { socketLogic } from "./socket/index";
-import { json, urlencoded } from "body-parser";
-import connectRedis from "connect-redis";
+import "reflect-metadata";
+import path from "path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import connectRedis from "connect-redis";
 import express from "express";
 import session from "express-session";
+import { json, urlencoded } from "body-parser";
+import { Server } from "socket.io";
 import { createServer } from "http";
+import { createConnection } from "typeorm";
 import passport from "passport";
 import { createClient } from "redis";
-import "reflect-metadata";
-import { Server } from "socket.io";
-import { createConnection } from "typeorm";
+
+import { socketLogic } from "./socket/index";
 import config from "./config";
 import { SESSION_SECRET } from "./config/index";
 import authRouter from "./routes/auth.routes";
@@ -45,6 +47,17 @@ const io = new Server(server);
     passport.use(localStrategy);
     app.use("/api/users", userRouter);
     app.use("/api/auth", authRouter);
+    if (process.env.NODE_ENV === "production") {
+      app.use(
+        "/",
+        express.static(path.join(__dirname, "..", "..", "client", "build"))
+      );
+      app.get("*", (_req, res) => {
+        res.sendFile(
+          path.resolve(__dirname, "..", "..", "client", "build", "index.html")
+        );
+      });
+    }
     server.listen(config.server.port, () => {
       console.log(`App is running on port ${config.server.port}`);
     });

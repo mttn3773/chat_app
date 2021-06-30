@@ -22,7 +22,7 @@ const ORM_CONFIG: ConnectionOptions = {
   },
 };
 
-const PROFILE_PICTURES_FOLDER = "../client/public/uploads/profile-pictures";
+const PROFILE_PICTURES_FOLDER = "../client/build/uploads/profile-pictures";
 const DEFAULT_PROFILE_PICTURE = "default.svg";
 
 const JWT_SERCRET = process.env.JWT_SECRET;

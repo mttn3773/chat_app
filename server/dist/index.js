@@ -12,19 +12,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("./socket/index");
-const body_parser_1 = require("body-parser");
-const connect_redis_1 = __importDefault(require("connect-redis"));
+require("reflect-metadata");
+const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cors_1 = __importDefault(require("cors"));
+const connect_redis_1 = __importDefault(require("connect-redis"));
 const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
+const body_parser_1 = require("body-parser");
+const socket_io_1 = require("socket.io");
 const http_1 = require("http");
+const typeorm_1 = require("typeorm");
 const passport_1 = __importDefault(require("passport"));
 const redis_1 = require("redis");
-require("reflect-metadata");
-const socket_io_1 = require("socket.io");
-const typeorm_1 = require("typeorm");
+const index_1 = require("./socket/index");
 const config_1 = __importDefault(require("./config"));
 const index_2 = require("./config/index");
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
@@ -52,6 +53,12 @@ const io = new socket_io_1.Server(server);
         passport_1.default.use(passport_2.localStrategy);
         app.use("/api/users", user_routes_1.default);
         app.use("/api/auth", auth_routes_1.default);
+        if (process.env.NODE_ENV === "production") {
+            app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", "..", "client", "build")));
+            app.get("*", (_req, res) => {
+                res.sendFile(path_1.default.resolve(__dirname, "..", "..", "client", "build", "index.html"));
+            });
+        }
         server.listen(config_1.default.server.port, () => {
             console.log(`App is running on port ${config_1.default.server.port}`);
         });
