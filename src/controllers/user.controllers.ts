@@ -1,7 +1,7 @@
-import { IApiResponse } from "./../interfaces/apiResponse.interface";
+import { IApiResponse } from "../interfaces/apiResponse.interface";
 import { NextFunction, Request, Response } from "express";
 import { upload } from "../utils/multer";
-import { ICreateUser } from "./../interfaces/user.interface";
+import { ICreateUser } from "../interfaces/user.interface";
 import {
   createUserService,
   deleteUserService,
@@ -13,7 +13,7 @@ import {
   sendVerificationEmailService,
   updateUserAvatar,
   verifyUserService,
-} from "./../services/user.services";
+} from "../services/user.services";
 export const getAllUsers = async (
   _req: Request,
   res: Response,

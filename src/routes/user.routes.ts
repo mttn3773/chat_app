@@ -1,4 +1,4 @@
-import { authMiddleware } from "./../middlewares/auth";
+import { authMiddleware } from "../middlewares/auth";
 import { Router } from "express";
 import { check } from "express-validator";
 
@@ -12,8 +12,8 @@ import {
   sendVerificationLink,
   setAvatar,
   verifyUser,
-} from "./../controllers/user.controllers";
-import { mapValidationErrors } from "./../utils/mapValidationErrors";
+} from "../controllers/user.controllers";
+import { mapValidationErrors } from "../utils/mapValidationErrors";
 const router = Router();
 
 // Get Users

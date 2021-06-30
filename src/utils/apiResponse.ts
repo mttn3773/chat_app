@@ -1,5 +1,5 @@
 import { IApiResponse } from "../interfaces/apiResponse.interface";
-import { IError } from "./../interfaces/error.interface";
+import { IError } from "../interfaces/error.interface";
 
 type ErrorResponseProps = {
   status?: number;

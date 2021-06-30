@@ -1,4 +1,4 @@
-import { logout } from "./../controllers/auth.controllers";
+import { logout } from "../controllers/auth.controllers";
 import { Router } from "express";
 import { login, me } from "../controllers/auth.controllers";
 import { authMiddleware } from "../middlewares/auth";

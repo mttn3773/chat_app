@@ -3,7 +3,7 @@ import {
   loginService,
   logoutService,
   meService,
-} from "./../services/auth.services";
+} from "../services/auth.services";
 
 export const me = async (req: Request, res: Response, _next: NextFunction) => {
   const { status, response } = meService(req);

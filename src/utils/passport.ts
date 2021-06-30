@@ -1,4 +1,4 @@
-import { IError } from "./../interfaces/error.interface";
+import { IError } from "../interfaces/error.interface";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import { verify } from "argon2";

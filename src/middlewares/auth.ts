@@ -1,4 +1,4 @@
-import { errorResponse } from "./../utils/apiResponse";
+import { errorResponse } from "../utils/apiResponse";
 import { Request, Response, NextFunction } from "express";
 
 export const authMiddleware = (

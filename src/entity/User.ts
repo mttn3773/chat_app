@@ -1,4 +1,4 @@
-import { ICreateUser } from "./../interfaces/user.interface";
+import { ICreateUser } from "../interfaces/user.interface";
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 import config from "../config";
 
