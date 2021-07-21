@@ -11,9 +11,11 @@ export const typeOrmOptions: PostgresConnectionOptions = {
   password: connectionOptions.password || "postgres",
   database: connectionOptions.database || "chat_app",
   synchronize: !__prod__(),
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: __prod__()
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
   logging: !__prod__(),
   entities: ["dist/entity/**/*.js"],
   migrations: ["dist/migration/**/*.js"],

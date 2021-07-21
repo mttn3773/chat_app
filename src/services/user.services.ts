@@ -159,6 +159,8 @@ export const getAllUsersService = async (): Promise<IApiResponse> => {
     const users = await User.find();
     return successResponse({ data: { users } });
   } catch (error) {
+    console.log(error);
+
     return errorResponse({});
   }
 };

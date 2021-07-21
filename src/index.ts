@@ -28,8 +28,6 @@ const io = new Server(server);
 (async () => {
   try {
     await createConnection(typeOrmOptions);
-    console.log(typeOrmOptions);
-
     app.use(json());
     app.use(urlencoded({ extended: false }));
     app.use(cors());
@@ -54,7 +52,7 @@ const io = new Server(server);
     passport.use(localStrategy);
     app.use("/api/users", userRouter);
     app.use("/api/auth", authRouter);
-    if (__prod__()) {
+    if (!__prod__()) {
       app.use(
         "/",
         express.static(path.join(__dirname, "..", ".", "client", "build"))

@@ -39,7 +39,6 @@ const io = new socket_io_1.Server(server);
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield typeorm_1.createConnection(ormconfig_1.typeOrmOptions);
-        console.log(ormconfig_1.typeOrmOptions);
         app.use(body_parser_1.json());
         app.use(body_parser_1.urlencoded({ extended: false }));
         app.use(cors_1.default());
@@ -59,7 +58,7 @@ const io = new socket_io_1.Server(server);
         passport_1.default.use(passport_2.localStrategy);
         app.use("/api/users", user_routes_1.default);
         app.use("/api/auth", auth_routes_1.default);
-        if (common_utils_1.__prod__()) {
+        if (!common_utils_1.__prod__()) {
             app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", ".", "client", "build")));
             app.get("*", (_req, res) => {
                 res.sendFile(path_1.default.resolve(__dirname, "..", ".", "client", "build", "index.html"));

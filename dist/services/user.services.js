@@ -152,6 +152,7 @@ const getAllUsersService = () => __awaiter(void 0, void 0, void 0, function* () 
         return apiResponse_1.successResponse({ data: { users } });
     }
     catch (error) {
+        console.log(error);
         return apiResponse_1.errorResponse({});
     }
 });
