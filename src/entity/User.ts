@@ -1,6 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ICreateUser } from "../interfaces/user.interface";
-
 @Entity()
 export class User extends BaseEntity {
   constructor(creadentials: ICreateUser) {

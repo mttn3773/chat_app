@@ -31,7 +31,7 @@ exports.typeOrmOptions = {
     username: connectionOptions.user || "postgres",
     password: connectionOptions.password || "postgres",
     database: connectionOptions.database || "chat_app",
-    synchronize: !common_utils_1.__prod__(),
+    synchronize: true,
     ssl: common_utils_1.__prod__()
         ? {
             rejectUnauthorized: false,

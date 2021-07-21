@@ -10,7 +10,7 @@ export const typeOrmOptions: PostgresConnectionOptions = {
   username: connectionOptions.user || "postgres",
   password: connectionOptions.password || "postgres",
   database: connectionOptions.database || "chat_app",
-  synchronize: !__prod__(),
+  synchronize: true,
   ssl: __prod__()
     ? {
         rejectUnauthorized: false,
