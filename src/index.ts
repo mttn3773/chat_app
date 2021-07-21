@@ -24,44 +24,42 @@ const server = createServer(app);
 const io = new Server(server);
 
 (async () => {
-  try {
-    await createConnection(config.ormConfig);
-    app.use(json());
-    app.use(urlencoded({ extended: false }));
-    app.use(cors());
-    app.use(cookieParser(SESSION_SECRET));
-    const RedisStore = connectRedis(session);
-    const redisClient = createClient();
+  await createConnection(config.ormConfig);
+  app.use(json());
+  app.use(urlencoded({ extended: false }));
+  app.use(cors());
+  app.use(cookieParser(SESSION_SECRET));
+  const RedisStore = connectRedis(session);
+  const redisClient = createClient();
+  app.use(
+    session({
+      ...config.session,
+      store: new RedisStore({ client: redisClient, disableTouch: true }),
+    })
+  );
+  app.use(passport.initialize());
+  app.use(passport.session());
+  io.on("connection", (socket) => {
+    console.log(`User connected`);
+    socketLogic(socket, io);
+  });
+  passport.use(localStrategy);
+  app.use("/api/users", userRouter);
+  app.use("/api/auth", authRouter);
+  if (process.env.NODE_ENV === "production") {
     app.use(
-      session({
-        ...config.session,
-        store: new RedisStore({ client: redisClient, disableTouch: true }),
-      })
+      "/",
+      express.static(path.join(__dirname, "..", ".", "client", "build"))
     );
-    app.use(passport.initialize());
-    app.use(passport.session());
-    io.on("connection", (socket) => {
-      console.log(`User connected`);
-      socketLogic(socket, io);
-    });
-    passport.use(localStrategy);
-    app.use("/api/users", userRouter);
-    app.use("/api/auth", authRouter);
-    if (process.env.NODE_ENV === "production") {
-      app.use(
-        "/",
-        express.static(path.join(__dirname, "..", ".", "client", "build"))
+    app.get("*", (_req, res) => {
+      res.sendFile(
+        path.resolve(__dirname, "..", ".", "client", "build", "index.html")
       );
-      app.get("*", (_req, res) => {
-        res.sendFile(
-          path.resolve(__dirname, "..", ".", "client", "build", "index.html")
-        );
-      });
-    }
-    server.listen(config.server.port, () => {
-      console.log(`App is running on port ${config.server.port}`);
     });
-  } catch (e) {}
+  }
+  server.listen(config.server.port, () => {
+    console.log(`App is running on port ${config.server.port}`);
+  });
 })();
 
 export default app;
