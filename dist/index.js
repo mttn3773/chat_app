@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const common_utils_1 = require("./utils/common.utils");
 require("reflect-metadata");
 const path_1 = __importDefault(require("path"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -36,13 +37,18 @@ const server = http_1.createServer(app);
 const io = new socket_io_1.Server(server);
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield typeorm_1.createConnection(config_1.default.ormConfig);
+        common_utils_1.__prod__()
+            ? yield typeorm_1.createConnection(process.env.DATABASE_URL)
+            : yield typeorm_1.createConnection(config_1.default.ormConfig);
         app.use(body_parser_1.json());
         app.use(body_parser_1.urlencoded({ extended: false }));
         app.use(cors_1.default());
         app.use(cookie_parser_1.default(index_2.SESSION_SECRET));
         const RedisStore = connect_redis_1.default(express_session_1.default);
-        const redisClient = redis_1.createClient(process.env.REDIS_URL);
+        let redisClient;
+        common_utils_1.__prod__()
+            ? (redisClient = redis_1.createClient(process.env.REDIS_URL))
+            : (redisClient = redis_1.createClient());
         app.use(express_session_1.default(Object.assign(Object.assign({}, config_1.default.session), { store: new RedisStore({ client: redisClient, disableTouch: true }) })));
         app.use(passport_1.default.initialize());
         app.use(passport_1.default.session());
@@ -53,7 +59,7 @@ const io = new socket_io_1.Server(server);
         passport_1.default.use(passport_2.localStrategy);
         app.use("/api/users", user_routes_1.default);
         app.use("/api/auth", auth_routes_1.default);
-        if (process.env.NODE_ENV === "production") {
+        if (common_utils_1.__prod__()) {
             app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", ".", "client", "build")));
             app.get("*", (_req, res) => {
                 res.sendFile(path_1.default.resolve(__dirname, "..", ".", "client", "build", "index.html"));

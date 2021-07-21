@@ -1,3 +1,4 @@
+import { __prod__ } from "./utils/common.utils";
 import "reflect-metadata";
 import path from "path";
 import cookieParser from "cookie-parser";
@@ -25,14 +26,18 @@ const io = new Server(server);
 
 (async () => {
   try {
-    await createConnection(config.ormConfig);
+    __prod__()
+      ? await createConnection(process.env.DATABASE_URL!)
+      : await createConnection(config.ormConfig);
     app.use(json());
     app.use(urlencoded({ extended: false }));
     app.use(cors());
     app.use(cookieParser(SESSION_SECRET));
     const RedisStore = connectRedis(session);
-    const redisClient = createClient(process.env.REDIS_URL!);
-
+    let redisClient;
+    __prod__()
+      ? (redisClient = createClient(process.env.REDIS_URL!))
+      : (redisClient = createClient());
     app.use(
       session({
         ...config.session,
@@ -48,7 +53,7 @@ const io = new Server(server);
     passport.use(localStrategy);
     app.use("/api/users", userRouter);
     app.use("/api/auth", authRouter);
-    if (process.env.NODE_ENV === "production") {
+    if (__prod__()) {
       app.use(
         "/",
         express.static(path.join(__dirname, "..", ".", "client", "build"))
