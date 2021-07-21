@@ -39,6 +39,7 @@ const io = new socket_io_1.Server(server);
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield typeorm_1.createConnection(ormconfig_1.typeOrmOptions);
+        console.log(ormconfig_1.typeOrmOptions);
         app.use(body_parser_1.json());
         app.use(body_parser_1.urlencoded({ extended: false }));
         app.use(cors_1.default());

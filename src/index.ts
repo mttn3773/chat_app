@@ -28,6 +28,8 @@ const io = new Server(server);
 (async () => {
   try {
     await createConnection(typeOrmOptions);
+    console.log(typeOrmOptions);
+
     app.use(json());
     app.use(urlencoded({ extended: false }));
     app.use(cors());
