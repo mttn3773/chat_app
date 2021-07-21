@@ -19,6 +19,7 @@ import { SESSION_SECRET } from "./config/index";
 import authRouter from "./routes/auth.routes";
 import userRouter from "./routes/user.routes";
 import { localStrategy } from "./utils/passport";
+import { typeOrmOptions } from "./ormconfig";
 
 const app = express();
 const server = createServer(app);
@@ -26,9 +27,7 @@ const io = new Server(server);
 
 (async () => {
   try {
-    __prod__()
-      ? await createConnection(process.env.DATABASE_URL!)
-      : await createConnection(config.ormConfig);
+    await createConnection(typeOrmOptions);
     app.use(json());
     app.use(urlencoded({ extended: false }));
     app.use(cors());

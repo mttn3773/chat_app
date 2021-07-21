@@ -32,14 +32,13 @@ const index_2 = require("./config/index");
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
 const passport_2 = require("./utils/passport");
+const ormconfig_1 = require("./ormconfig");
 const app = express_1.default();
 const server = http_1.createServer(app);
 const io = new socket_io_1.Server(server);
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        common_utils_1.__prod__()
-            ? yield typeorm_1.createConnection(process.env.DATABASE_URL)
-            : yield typeorm_1.createConnection(config_1.default.ormConfig);
+        yield typeorm_1.createConnection(ormconfig_1.typeOrmOptions);
         app.use(body_parser_1.json());
         app.use(body_parser_1.urlencoded({ extended: false }));
         app.use(cors_1.default());
