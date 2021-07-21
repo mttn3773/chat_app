@@ -42,7 +42,7 @@ const io = new socket_io_1.Server(server);
         app.use(cors_1.default());
         app.use(cookie_parser_1.default(index_2.SESSION_SECRET));
         const RedisStore = connect_redis_1.default(express_session_1.default);
-        const redisClient = redis_1.createClient();
+        const redisClient = redis_1.createClient(process.env.REDIS_URL);
         app.use(express_session_1.default(Object.assign(Object.assign({}, config_1.default.session), { store: new RedisStore({ client: redisClient, disableTouch: true }) })));
         app.use(passport_1.default.initialize());
         app.use(passport_1.default.session());

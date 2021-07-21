@@ -31,7 +31,8 @@ const io = new Server(server);
     app.use(cors());
     app.use(cookieParser(SESSION_SECRET));
     const RedisStore = connectRedis(session);
-    const redisClient = createClient();
+    const redisClient = createClient(process.env.REDIS_URL!);
+
     app.use(
       session({
         ...config.session,
