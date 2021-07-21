@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.logout = exports.me = void 0;
-const auth_services_1 = require("./../services/auth.services");
+const auth_services_1 = require("../services/auth.services");
 const me = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = auth_services_1.meService(req);
     return res
@@ -21,6 +21,7 @@ const me = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
 exports.me = me;
 const logout = (req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = yield auth_services_1.logoutService(req);
+    console.log(status, response);
     return res
         .status(status)
         .json(Object.assign({}, response))

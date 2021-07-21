@@ -20,7 +20,7 @@ const User_1 = require("../entity/User");
 exports.localStrategy = new passport_local_1.Strategy({ usernameField: "email" }, function (email, password, done) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const user = yield User_1.User.findOne({ email }, { select: ["password", "email", "id", "username", "avatar"] });
+            const user = yield User_1.User.findOne({ email }, { select: ["password", "email", "id", "username"] });
             if (!user) {
                 return done({ msg: "Invalid email", param: "email" }, false);
             }

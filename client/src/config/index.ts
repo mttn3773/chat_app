@@ -10,7 +10,7 @@ const ENDPOINTS = {
   sendForgotPasswordEmail: baseUrl + "/api/users/forgot-password",
   avatar: baseUrl + "api/users/image",
   user: (id: string) => baseUrl + `api/users/${id}`,
-  logout: baseUrl + "/api/auth/logout",
+  logout: baseUrl + "api/auth/logout",
 };
 
 export const config = {

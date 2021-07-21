@@ -53,10 +53,10 @@ const io = new socket_io_1.Server(server);
         passport_1.default.use(passport_2.localStrategy);
         app.use("/api/users", user_routes_1.default);
         app.use("/api/auth", auth_routes_1.default);
-        if (process.env.NODE_ENV === "production") {
-            app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", "..", "client", "build")));
+        if (true) {
+            app.use("/", express_1.default.static(path_1.default.join(__dirname, "..", ".", "client", "build")));
             app.get("*", (_req, res) => {
-                res.sendFile(path_1.default.resolve(__dirname, "..", "..", "client", "build", "index.html"));
+                res.sendFile(path_1.default.resolve(__dirname, "..", ".", "client", "build", "index.html"));
             });
         }
         server.listen(config_1.default.server.port, () => {

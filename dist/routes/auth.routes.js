@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const auth_controllers_1 = require("./../controllers/auth.controllers");
+const auth_controllers_1 = require("../controllers/auth.controllers");
 const express_1 = require("express");
 const auth_controllers_2 = require("../controllers/auth.controllers");
 const auth_1 = require("../middlewares/auth");

@@ -8,13 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const typeorm_1 = require("typeorm");
-const config_1 = __importDefault(require("../config"));
 let User = class User extends typeorm_1.BaseEntity {
     constructor(creadentials) {
         super();
@@ -42,10 +38,6 @@ __decorate([
     typeorm_1.Column({ nullable: false, select: false }),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
-__decorate([
-    typeorm_1.Column({ default: config_1.default.folders.defaultProfilePicture }),
-    __metadata("design:type", String)
-], User.prototype, "avatar", void 0);
 __decorate([
     typeorm_1.Column({ default: false, nullable: false }),
     __metadata("design:type", Boolean)

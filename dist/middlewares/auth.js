@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
-const apiResponse_1 = require("./../utils/apiResponse");
+const apiResponse_1 = require("../utils/apiResponse");
 const authMiddleware = (req, res, next) => {
     if (!req.user) {
         const { status, response } = apiResponse_1.errorResponse({

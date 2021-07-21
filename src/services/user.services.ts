@@ -1,6 +1,5 @@
 import { hash } from "argon2";
 import { Request } from "express";
-import { unlink } from "fs";
 import { sign, TokenExpiredError, verify } from "jsonwebtoken";
 import config from "../config";
 import { User } from "../entity/User";
@@ -11,6 +10,7 @@ import { sendResetPasswordEmail } from "../nodemailer/sendResetPasswordEmail";
 import { sendVerificationEmail } from "../nodemailer/sendVerificationEmail";
 import { errorResponse, successResponse } from "../utils/apiResponse";
 import { baseUrl } from "../utils/baseUrl";
+
 export const findUserByEmail = async (email: string): Promise<IApiResponse> => {
   try {
     const user = await User.findOne({ where: { email } });
@@ -188,25 +188,6 @@ export const resetPasswordService = async (
         errors: [{ msg: "Verification link expired" }],
       });
     }
-    return errorResponse({});
-  }
-};
-
-export const updateUserAvatar = async (
-  user: User,
-  avatar: string
-): Promise<IApiResponse> => {
-  try {
-    // Delete previous user avatar if its not the default one
-    if (!(user.avatar === config.folders.defaultProfilePicture)) {
-      unlink(
-        `${config.folders.profilePicturesFolder}/${user.avatar}`,
-        () => {}
-      );
-    }
-    await User.update({ id: user.id }, { avatar });
-    return { status: 200, response: { success: true, msg: "Image uploaded" } };
-  } catch (error) {
     return errorResponse({});
   }
 };

@@ -1,6 +1,4 @@
-import { IApiResponse } from "../interfaces/apiResponse.interface";
 import { NextFunction, Request, Response } from "express";
-import { upload } from "../utils/multer";
 import { ICreateUser } from "../interfaces/user.interface";
 import {
   createUserService,
@@ -11,7 +9,6 @@ import {
   resetPasswordService,
   sendResetPasswordEmailService,
   sendVerificationEmailService,
-  updateUserAvatar,
   verifyUserService,
 } from "../services/user.services";
 export const getAllUsers = async (
@@ -133,44 +130,4 @@ export const resetPassword = async (
     .status(status)
     .json({ ...response })
     .end();
-};
-export const setAvatar = (req: Request, res: Response, _next: NextFunction) => {
-  upload(req, res, async (err: any) => {
-    try {
-      // Send errors returned from multer file filtering functions
-      if (err) {
-        return res
-          .status(500)
-          .json({ success: false, errors: err } as IApiResponse["response"])
-          .end();
-      }
-      // Check if file exists
-      if (!req.file) {
-        return res
-          .status(500)
-          .json({
-            success: false,
-            errors: [{ msg: "No file selected" }],
-          } as IApiResponse["response"])
-          .end();
-      }
-      // Update user avatar in db
-      const { response, status } = await updateUserAvatar(
-        (req.user as any)!,
-        req.file.filename
-      );
-      return res
-        .status(status)
-        .json({ ...response })
-        .end();
-    } catch (error) {
-      return res
-        .status(500)
-        .json({
-          success: false,
-          errors: [{ msg: "Something went wrong" }],
-        } as IApiResponse["response"])
-        .end();
-    }
-  });
 };

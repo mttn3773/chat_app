@@ -36,8 +36,6 @@ test("test POST - /users", async (done) => {
       const { body } = res;
       expect(body).toHaveProperty("success", true);
       expect(body.data).toHaveProperty("user");
-      console.log(body);
-
       const { user } = body.data;
       expect(user).toHaveProperty("email", "bob@bob.com");
       expect(user).toHaveProperty("id");

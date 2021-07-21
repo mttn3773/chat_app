@@ -1,6 +1,5 @@
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ICreateUser } from "../interfaces/user.interface";
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
-import config from "../config";
 
 @Entity()
 export class User extends BaseEntity {
@@ -23,9 +22,6 @@ export class User extends BaseEntity {
 
   @Column({ nullable: false, select: false })
   password?: string;
-
-  @Column({ default: config.folders.defaultProfilePicture })
-  avatar: string;
 
   @Column({ default: false, nullable: false })
   verified: boolean;

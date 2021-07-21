@@ -47,7 +47,7 @@ const io = new Server(server);
     passport.use(localStrategy);
     app.use("/api/users", userRouter);
     app.use("/api/auth", authRouter);
-    if (process.env.NODE_ENV === "production") {
+    if (true) {
       app.use(
         "/",
         express.static(path.join(__dirname, "..", ".", "client", "build"))

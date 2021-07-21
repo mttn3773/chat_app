@@ -19,6 +19,8 @@ export const logout = async (
   _next: NextFunction
 ) => {
   const { status, response } = await logoutService(req);
+  console.log(status, response);
+
   return res
     .status(status)
     .json({ ...response })

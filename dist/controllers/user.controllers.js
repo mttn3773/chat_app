@@ -9,9 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setAvatar = exports.resetPassword = exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getUserById = exports.getAllUsers = void 0;
-const multer_1 = require("../utils/multer");
-const user_services_1 = require("./../services/user.services");
+exports.resetPassword = exports.createUser = exports.forgotPassword = exports.sendVerificationLink = exports.verifyUser = exports.deleteAllUsers = exports.getUserById = exports.getAllUsers = void 0;
+const user_services_1 = require("../services/user.services");
 const getAllUsers = (_req, res, _next) => __awaiter(void 0, void 0, void 0, function* () {
     const { status, response } = yield user_services_1.getAllUsersService();
     return res
@@ -99,40 +98,4 @@ const resetPassword = (req, res, _next) => __awaiter(void 0, void 0, void 0, fun
         .end();
 });
 exports.resetPassword = resetPassword;
-const setAvatar = (req, res, _next) => {
-    multer_1.upload(req, res, (err) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            if (err) {
-                return res
-                    .status(500)
-                    .json({ success: false, errors: err })
-                    .end();
-            }
-            if (!req.file) {
-                return res
-                    .status(500)
-                    .json({
-                    success: false,
-                    errors: [{ msg: "No file selected" }],
-                })
-                    .end();
-            }
-            const { response, status } = yield user_services_1.updateUserAvatar(req.user, req.file.filename);
-            return res
-                .status(status)
-                .json(Object.assign({}, response))
-                .end();
-        }
-        catch (error) {
-            return res
-                .status(500)
-                .json({
-                success: false,
-                errors: [{ msg: "Something went wrong" }],
-            })
-                .end();
-        }
-    }));
-};
-exports.setAvatar = setAvatar;
 //# sourceMappingURL=user.controllers.js.map
