@@ -52,7 +52,7 @@ const io = new Server(server);
     passport.use(localStrategy);
     app.use("/api/users", userRouter);
     app.use("/api/auth", authRouter);
-    if (!__prod__()) {
+    if (__prod__()) {
       app.use(
         "/",
         express.static(path.join(__dirname, "..", ".", "client", "build"))
