@@ -22,7 +22,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.typeOrmOptions = void 0;
 const common_utils_1 = require("./utils/common.utils");
 const PostgressConnectionStringParser = __importStar(require("pg-connection-string"));
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = process.env.DATABASE_URL || "";
 const connectionOptions = PostgressConnectionStringParser.parse(databaseUrl);
 exports.typeOrmOptions = {
     type: "postgres",
@@ -32,6 +32,7 @@ exports.typeOrmOptions = {
     password: connectionOptions.password || "postgres",
     database: connectionOptions.database || "chat_app",
     synchronize: !common_utils_1.__prod__(),
+    ssl: common_utils_1.__prod__(),
     logging: !common_utils_1.__prod__(),
     entities: ["dist/entity/**/*.js"],
     migrations: ["dist/migration/**/*.js"],
